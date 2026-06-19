@@ -37,7 +37,6 @@ jobs:
       - name: Run star ranking collector
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COLLECTOR_TOKEN: ${{ secrets.COLLECTOR_TOKEN }}
         run: |
           python scripts/collect_star.py --output reports/${{ steps.date.outputs.month }}/top50-ai-skills-${{ steps.date.outputs.month }}.html
 

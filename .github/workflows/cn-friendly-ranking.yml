@@ -36,7 +36,6 @@ jobs:
       - name: Run CN-friendly ranking collector
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COLLECTOR_TOKEN: ${{ secrets.COLLECTOR_TOKEN }}
         run: |
           python scripts/collect_cn_friendly.py --output reports/${{ steps.date.outputs.month }}/cn-friendly-skills-${{ steps.date.outputs.month }}.html
 

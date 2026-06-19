@@ -36,7 +36,6 @@ jobs:
       - name: Run activity ranking collector
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COLLECTOR_TOKEN: ${{ secrets.COLLECTOR_TOKEN }}
         run: |
           python scripts/collect_activity.py --output reports/${{ steps.date.outputs.month }}/active-ai-skills-${{ steps.date.outputs.month }}.html
 

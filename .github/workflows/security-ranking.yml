@@ -36,7 +36,6 @@ jobs:
       - name: Run security ranking collector
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COLLECTOR_TOKEN: ${{ secrets.COLLECTOR_TOKEN }}
         run: |
           python scripts/collect_security.py --output reports/${{ steps.date.outputs.month }}/secure-ai-skills-${{ steps.date.outputs.month }}.html
 
