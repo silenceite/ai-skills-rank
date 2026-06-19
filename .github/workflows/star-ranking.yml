@@ -57,6 +57,8 @@ jobs:
       - name: Update GitHub Pages
         if: always()
         run: |
+          mkdir -p docs/reports/${{ steps.date.outputs.month }}
+          cp reports/${{ steps.date.outputs.month }}/top50-ai-skills-*.html docs/reports/${{ steps.date.outputs.month }}/ || true
           mkdir -p docs/latest
           cp reports/${{ steps.date.outputs.month }}/top50-ai-skills-*.html docs/latest/star-ranking.html || true
           git add docs/
