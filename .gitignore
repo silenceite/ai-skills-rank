@@ -47,3 +47,7 @@ reports/_test/
 
 # WorkBuddy 本地记忆（项目私有数据，不提交到仓库）
 .workbuddy/
+
+# 项目内部文档（保留在本地，不提交到 GitHub）
+docs/PROJECT_PLAN.md
+docs/SECURITY_GUIDE.md
