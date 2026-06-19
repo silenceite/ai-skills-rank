@@ -1,3 +1,4 @@
+
 # AI Skills Rank
 
 > AI Agent Skills 的"大众点评" — 不只看 Star，更看活跃度、安全性和中文友好度。
@@ -269,3 +270,6 @@ git push origin feature/new-skill-submission
 ---
 
 *AI Skills Rank · 让每一个 AI Agent Skill 都被看见、被评估、被信任*
+# ai-skills-rank
+AI Agent Skills 多维评估榜单 — 不只看 Star，更看活跃度、安全性和中文友好度
+
