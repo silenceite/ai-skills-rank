@@ -1,0 +1,42 @@
+name: Star Ranking
+
+on:
+  schedule:
+    - cron: '0 2 3 * *'  # 每月3号 UTC 2:00（北京时间 10:00）
+  workflow_dispatch:       # 手动触发
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests jinja2
+
+      - name: Run collector
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/collect_star.py
+
+      - name: Generate report
+        run: python scripts/generate_report.py --type star
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          git commit -m "Monthly star ranking update" || exit 0
+          git push
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Star 最高的 50 个 AI Agent Skill</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f9fa; color: #1a1a2e; line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; color: #1a1a2e; }
+  .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 32px; }
+  .summary { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+  .stat-card { background: #fff; border-radius: 8px; padding: 16px 24px; border: 1px solid #e5e7eb; flex: 1; min-width: 160px; }
+  .stat-card .label { font-size: 12px; color: #6b7280; margin-bottom: 4px; }
+  .stat-card .value { font-size: 24px; font-weight: 600; color: #534AB7; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  thead { background: #534AB7; }
+  thead th { color: #fff; font-size: 13px; font-weight: 500; padding: 14px 16px; text-align: left; white-space: nowrap; }
+  thead th:first-child { width: 50px; text-align: center; }
+  thead th:nth-child(3) { width: 90px; text-align: right; }
+  thead th:nth-child(4) { width: 100px; }
+  tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
+  tbody tr:hover { background: #f5f3ff; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 12px 16px; font-size: 13px; vertical-align: top; }
+  td.rank { text-align: center; font-weight: 600; color: #9ca3af; font-size: 15px; }
+  td.stars { text-align: right; font-weight: 600; color: #534AB7; white-space: nowrap; }
+  td.platform { white-space: nowrap; }
+  .repo-name { font-weight: 500; color: #1a1a2e; }
+  .repo-desc { color: #6b7280; font-size: 12px; margin-top: 2px; line-height: 1.5; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+  .badge-official { background: #e1f5ee; color: #0f6e56; }
+  .badge-claude { background: #eecedf; color: #534AB7; }
+  .badge-openclaw { background: #faeada; color: #854f0b; }
+  .badge-cross { background: #e6f1fb; color: #185fa5; }
+  .badge-cursor { background: #fbeaf0; color: #993556; }
+  .footer { margin-top: 32px; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; line-height: 1.8; }
+  .footer strong { color: #1a1a2e; }
+  .top3 { background: #faf9ff; }
+  .top3 td.rank { color: #534AB7; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>GitHub Star 最高的 50 个 AI Agent Skill</h1>
+  <p class="subtitle">数据截至 2026 年 6 月 · 来源：GitHub API、CSDN、掘金、知乎、腾讯云、声网、OSSInsight 多源交叉验证</p>
+
+  <div class="summary">
+    <div class="stat-card">
+      <div class="label">收录 Skill 总数</div>
+      <div class="value">50</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">最高 Star</div>
+      <div class="value">212K</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">覆盖平台</div>
+      <div class="value">6+</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">GitHub Skills 仓库总量</div>
+      <div class="value">1,400+</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>仓库名称 / 核心功能</th>
+        <th>Star</th>
+        <th>平台</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="top3"><td class="rank">1</td><td><div class="repo-name">affaan-m/everything-claude-code</div><div class="repo-desc">全能型 Agent 框架：261 个 skills + 64 个 agents + 84 个命令。内置 AgentShield 安全审计（1282 项测试、98% 覆盖率）、连续学习 v2 系统（直觉驱动+置信度评分）。跨平台兼容 8+ AI 编码工具。</div></td><td class="stars">~212K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr class="top3"><td class="rank">2</td><td><div class="repo-name">obra/superpowers</div><div class="repo-desc">最流行的结构化开发方法论技能框架，680K+ 安装量。包含 14 个核心可组合 skill：brainstorming→writing-plans→executing-plans→TDD→code-review→systematic-debugging。强制 Claude "先想清楚再动手"。</div></td><td class="stars">~200K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr class="top3"><td class="rank">3</td><td><div class="repo-name">anthropics/skills</div><div class="repo-desc">Anthropic 官方技能仓库，17 个核心 skill：文档处理（docx/pdf/pptx/xlsx）、前端设计（frontend-design，564K+安装量）、MCP builder、Web artifacts builder、skill-creator。生态标准参考实现。</div></td><td class="stars">~148K</td><td class="platform"><span class="badge badge-official">官方</span></td></tr>
+
+      <tr><td class="rank">4</td><td><div class="repo-name">mattpocock/skills</div><div class="repo-desc">SKILL.md 格式参考实现。核心 skill：grill-with-docs（编码前深度上下文收集）、caveman（大幅降低 token 消耗）、diagnose（结构化调试，处理误导性错误信息）。</div></td><td class="stars">~123K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">5</td><td><div class="repo-name">forrestchang/andrej-karpathy-skills</div><div class="repo-desc">复刻 Andrej Karpathy 编程风格：减少 AI "过度热情"，控制改动范围，强制先写测试再实现，拒绝无关重构。让 Claude 行为更接近资深工程师。</div></td><td class="stars">~93K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">6</td><td><div class="repo-name">ComposioHQ/awesome-claude-skills</div><div class="repo-desc">1000+ skills 导航目录，集成 500+ SaaS 应用 OAuth 管理。按类别和工作流类型组织，覆盖开发、数据分析、商业应用。支持 npx skills add 一键安装。</div></td><td class="stars">~64K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">7</td><td><div class="repo-name">shanraisshan/claude-code-best-practice</div><div class="repo-desc">从 vibe coding 到 agentic engineering 的进阶指南。系统化最佳实践 skill，覆盖提示工程、上下文管理、多 agent 协作模式。</div></td><td class="stars">~58K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">8</td><td><div class="repo-name">VoltAgent/awesome-openclaw-skills</div><div class="repo-desc">OpenClaw 平台技能精选合集，从官方 Registry 中筛选并分类 5,400+ 技能。人工筛选质量把关，覆盖自动化、文件管理、开发工具等。</div></td><td class="stars">~50K</td><td class="platform"><span class="badge badge-openclaw">OpenClaw</span></td></tr>
+
+      <tr><td class="rank">9</td><td><div class="repo-name">hesreallyhim/awesome-claude-code</div><div class="repo-desc">最权威的 Claude Code 生态 awesome-list（仅收录 1K+ star 项目）。涵盖 skills、hooks、slash commands、agent orchestrators、applications、plugins 全品类。</div></td><td class="stars">~41K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">10</td><td><div class="repo-name">sickn33/antigravity-awesome-skills</div><div class="repo-desc">1,340+ agentic skills 大合集，附 CLI 安装器。支持 Claude Code、Copilot、Cursor、Gemini CLI、Antigravity 等多平台。含专用插件、bundles、工作流。</div></td><td class="stars">~35K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">11</td><td><div class="repo-name">wshobson/agents</div><div class="repo-desc">跨平台 AI agents 合集，包含多种预配置 agent 角色和技能模板，覆盖开发、测试、运维、写作等场景。</div></td><td class="stars">~34K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">12</td><td><div class="repo-name">Yeachan-Heo/oh-my-claudecode</div><div class="repo-desc">Claude Code 配置与技能集合，类似 oh-my-zsh 之于 zsh。预配置主题、插件、快捷命令，开箱即用的 Claude Code 增强方案。</div></td><td class="stars">~32K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">13</td><td><div class="repo-name">hesamsheikh/awesome-openclaw-usecases</div><div class="repo-desc">社区收集的 OpenClaw 用例集合，按生活场景分类：自动化办公、文件整理、邮件处理、日程管理等。</div></td><td class="stars">~31K</td><td class="platform"><span class="badge badge-openclaw">OpenClaw</span></td></tr>
+
+      <tr><td class="rank">14</td><td><div class="repo-name">vercel-labs/agent-skills</div><div class="repo-desc">Vercel 官方技能包，核心 skill：web-design-guidelines（Web 设计标准审查，133K+周安装量）。将 Vercel 工程团队的 React/Next.js 最佳实践编码为 agent 可执行的规则。</div></td><td class="stars">~27K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">15</td><td><div class="repo-name">VoltAgent/awesome-agent-skills</div><div class="repo-desc">1,000+ agent skills 跨平台精选列表，强调"质量重于数量"。每个 skill 经人工筛选，兼容 Claude Code、Codex、Gemini CLI、Cursor。</div></td><td class="stars">~26K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">16</td><td><div class="repo-name">K-Dense-AI/claude-scientific-skills</div><div class="repo-desc">科学研究专用技能包，140+ 科研领域 skill：生物信息学、药物发现、基因组学、化学分析、数据建模、科学可视化。Jupyter 友好，跨工具兼容。</div></td><td class="stars">~25K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">17</td><td><div class="repo-name">JimLiu/baoyu-skills</div><div class="repo-desc">宝玉技能包，涵盖 agent-skills、claude-skills、codex-skills、openclaw-skills 多平台技能集合。</div></td><td class="stars">~22K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">18</td><td><div class="repo-name">OthmanAdi/planning-with-files</div><div class="repo-desc">Manus 风格的持久化 Markdown 规划 skill。将计划从聊天记录中提取为可 diff、可 review、可交接的文件。支持 17+ IDE/agent，提供 /plan 命令。</div></td><td class="stars">~22K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">19</td><td><div class="repo-name">openai/skills</div><div class="repo-desc">OpenAI Codex 官方技能目录。分层管理：.system（内置）、.curated（精选）、.experimental（实验）。支持 $skill-installer 按名称/URL/目录安装，许可按 skill 粒度声明。</div></td><td class="stars">~20K</td><td class="platform"><span class="badge badge-official">Codex</span></td></tr>
+
+      <tr><td class="rank">20</td><td><div class="repo-name">vercel-labs/skills</div><div class="repo-desc">Skills 生态 CLI 工具链（npx skills）。支持 add/find/update/init，兼容 GitHub shorthand/URL/子目录/git URL/本地路径。37+ agent 平台支持的包管理体验。</div></td><td class="stars">~20K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">21</td><td><div class="repo-name">VoltAgent/awesome-claude-code-subagents</div><div class="repo-desc">Claude Code 子代理（subagent）技能集合。专注于多 agent 协作场景：任务分发、并行执行、结果汇总、质量门控。</div></td><td class="stars">~19K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">22</td><td><div class="repo-name">alirezarezvani/claude-skills</div><div class="repo-desc">个人维护最大合集：329 个 skills + 30+ agents + 70+ 自定义命令。覆盖工程、营销、产品、合规、C-level 顾问、研究、商业运营、财务及日常生产力。</div></td><td class="stars">~19K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">23</td><td><div class="repo-name">supermemoryai/supermemory</div><div class="repo-desc">AI 记忆和上下文引擎。混合记忆+检索模式，随时间追踪和提取用户相关事实。解决 Claude Code 跨 session 记忆丢失痛点，记忆评估基准测试表现优异。</div></td><td class="stars">~17K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">24</td><td><div class="repo-name">teng-lin/notebooklm-py</div><div class="repo-desc">Google NotebookLM 非官方 Python API 和 agent skill。通过 Python/CLI/AI agent（Claude Code、Codex、OpenClaw）编程式访问 NotebookLM 全部功能，包括 Web UI 未暴露的能力。</div></td><td class="stars">~17K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">25</td><td><div class="repo-name">NevaMind-AI/memU</div><div class="repo-desc">面向主动式 AI agent 的记忆工具。结构化存储、意图捕获、10 倍 token 缩减。让 agent 在长周期任务中保持上下文一致性。</div></td><td class="stars">~14K</td><td class="platform"><span class="badge badge-openclaw">OpenClaw</span></td></tr>
+
+      <tr><td class="rank">26</td><td><div class="repo-name">wanshuiyin/Auto-claude-code-research-in-sleep</div><div class="repo-desc">ARIS（Auto-Research-In-Sleep）— 仅基于 Markdown 的轻量级自主 ML 研究 skill。跨模型评审循环、创意发现和实验自动化。无框架、无锁定。</div></td><td class="stars">~12K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">27</td><td><div class="repo-name">coreyhaines31/marketingskills</div><div class="repo-desc">营销技能包：CRO（转化率优化）、文案撰写、SEO 审计、数据分析、邮件序列、Amazon 竞品分析。让 Claude 具备营销策略和 campaign 执行能力。</div></td><td class="stars">~9K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">28</td><td><div class="repo-name">travisvn/awesome-claude-skills</div><div class="repo-desc">社群维护的 Claude Skills 精选清单。资源分类清晰，适合第一次接触 Skills 生态的人快速了解全貌。</div></td><td class="stars">~8K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">29</td><td><div class="repo-name">Gen-Verse/OpenClaw-RL</div><div class="repo-desc">OpenClaw-RL：通过对话训练任何 agent。强化学习式技能获取，让 agent 在交互中持续进化能力。</div></td><td class="stars">~6K</td><td class="platform"><span class="badge badge-openclaw">OpenClaw</span></td></tr>
+
+      <tr><td class="rank">30</td><td><div class="repo-name">trailofbits/skills</div><div class="repo-desc">Trail of Bits 安全审计技能包。代码审计、供应链风险分析、Semgrep 规则生成、SARIF 解析、devcontainer 安全配置。含 "second-opinion" 外部 LLM 复核机制。</div></td><td class="stars">~5K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">31</td><td><div class="repo-name">zebbern/claude-code-guide</div><div class="repo-desc">Claude Code 完整指南：设置、命令、工作流、agents、skills 和技巧。从初学者到高级用户的渐进式学习资源。</div></td><td class="stars">~4K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">32</td><td><div class="repo-name">xianyu110/awesome-openclaw-tutorial</div><div class="repo-desc">最全面的 OpenClaw 中文教程：安装、配置、实战案例和避坑指南。GitHub 版持续更新。</div></td><td class="stars">~4K</td><td class="platform"><span class="badge badge-openclaw">OpenClaw</span></td></tr>
+
+      <tr><td class="rank">33</td><td><div class="repo-name">parcadei/Continuous-Claude-v3</div><div class="repo-desc">Claude Code 上下文管理。通过 ledgers 和 handoffs 使用 Hooks 维护状态。MCP 执行无上下文污染，隔离上下文窗口的 Agent 编排。</div></td><td class="stars">~4K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">34</td><td><div class="repo-name">Agents365-ai/drawio-skill</div><div class="repo-desc">自然语言生成 draw.io 图表。6 种预设、视觉自检 + 最多 5 轮精修、代码库转图表、10,000+ 官方图形 & 321 个 AI/LLM 品牌徽标。支持导出 PNG/SVG/PDF。</div></td><td class="stars">~4K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">35</td><td><div class="repo-name">SamurAIGPT/Generative-Media-Skills</div><div class="repo-desc">多模态生成媒体技能，由 muapi.ai 驱动。为 AI agent 提供高质量图像、视频和音频生成能力。</div></td><td class="stars">~4K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">36</td><td><div class="repo-name">iflytek/skillhub</div><div class="repo-desc">科大讯飞出品的自托管企业级 agent 技能注册中心。发布和版本管理技能包，通过 RBAC 和审计日志治理，支持 Docker/K8s 本地部署。</div></td><td class="stars">~4K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">37</td><td><div class="repo-name">remotion-dev/skills</div><div class="repo-desc">Remotion 官方技能包：用 React 制作程序化视频。117K+ 周安装量。让 agent 掌握动画、时间轴、音讯和 3D 场景的视频工程能力。</div></td><td class="stars">~3K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">38</td><td><div class="repo-name">browser-act/skills</div><div class="repo-desc">为 AI agent 构建的浏览器自动化 CLI。突破反爬虫墙，卡住时跨平台移交人工处理。支持并行多任务执行、独立多会话、隔离多账户浏览。</div></td><td class="stars">~3K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">39</td><td><div class="repo-name">FreedomIntelligence/OpenClaw-Medical-Skills</div><div class="repo-desc">面向 OpenClaw 的最大开源医疗 AI 技能库。涵盖临床诊断辅助、药物交互查询、病历结构化、医学文献检索等专业医疗场景。</div></td><td class="stars">~3K</td><td class="platform"><span class="badge badge-openclaw">OpenClaw</span></td></tr>
+
+      <tr><td class="rank">40</td><td><div class="repo-name">KhazP/vibe-coding-prompt-template</div><div class="repo-desc">使用 LLM 为 AI IDE 生成 PRD、技术设计和 MVP 的工作流模板。结构化需求分析到代码生成的完整 pipeline。</div></td><td class="stars">~3K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">41</td><td><div class="repo-name">ljagiello/ctf-skills</div><div class="repo-desc">CTF（Capture The Flag）安全竞赛技能包。涵盖 Web 漏洞利用、二进制 pwn、密码学、逆向工程、取证、OSINT 等全品类。</div></td><td class="stars">~2K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">42</td><td><div class="repo-name">rohitg00/pro-workflow</div><div class="repo-desc">Claude Code 自我纠正记忆系统：在 50+ 个会话中不断积累学习。上下文工程、并行 worktrees、agent 团队和 17 个经过实战检验的 skills。</div></td><td class="stars">~2K</td><td class="platform"><span class="badge badge-claude">Claude</span></td></tr>
+
+      <tr><td class="rank">43</td><td><div class="repo-name">ciembor/agent-rules-books</div><div class="repo-desc">AGENTS.md 规则/skills，灵感来自 Clean Code、Refactoring、DDD、Clean Architecture 和 DDIA 等经典编程书籍。将书中原则编码为 agent 可执行的规则。</div></td><td class="stars">~2K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">44</td><td><div class="repo-name">anbeime/skill</div><div class="repo-desc">收录最全、更新最快的技能商店，72 个精选技能包。涵盖文档处理、内容创作、编程开发、机器学习、自动化工作流。自动抓取 GitHub 所有 Skills 项目并按分类整理。</div></td><td class="stars">~2K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">45</td><td><div class="repo-name">HITsz-TMG/VideoClaw</div><div class="repo-desc">AI 全自动化视频生成员工。Chat an Idea, Get a Film。从文本描述到完整视频的端到端生成 pipeline。</div></td><td class="stars">~2K</td><td class="platform"><span class="badge badge-openclaw">OpenClaw</span></td></tr>
+
+      <tr><td class="rank">46</td><td><div class="repo-name">wondelai/skills</div><div class="repo-desc">面向 Claude Code 和其他 agentskills.io 兼容 agent 的技能集合。遵循开放标准规范。</div></td><td class="stars">~1K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">47</td><td><div class="repo-name">a5c-ai/babysitter</div><div class="repo-desc">Babysitter 对 agentic 工作流强制执行服从性，使 agent 能通过确定性的、无幻觉的自我编排来管理极其复杂的任务和工作流。</div></td><td class="stars">~1K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">48</td><td><div class="repo-name">activeloopai/hivemind</div><div class="repo-desc">Hivemind 将你的操作轨迹转化为跨 agent 可复用的技能。观察用户行为，自动生成 SKILL.md，实现技能的自动沉淀。</div></td><td class="stars">~1K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+
+      <tr><td class="rank">49</td><td><div class="repo-name">prompt-security/clawsec</div><div class="repo-desc">面向 OpenClaw/Hermes/PicoClaw/NanoClaw agent 的完整安全技能套件。漂移检测、实时安全建议、自动审计和技能完整性验证，保护 SOUL.md 等核心文件。</div></td><td class="stars">~1K</td><td class="platform"><span class="badge badge-openclaw">OpenClaw</span></td></tr>
+
+      <tr><td class="rank">50</td><td><div class="repo-name">JuneYaooo/gpt-image2-ppt-skills</div><div class="repo-desc">克隆任何 .pptx 成你自己的演示文稿。OpenAI gpt-image-2 模仿版式，你提供内容。内含 10 种捆绑风格。Claude Code / OpenClaw skill。</div></td><td class="stars">~1K</td><td class="platform"><span class="badge badge-cross">跨平台</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p><strong>数据说明：</strong></p>
+    <p>• Star 数据为 2026 年 5-6 月多源快照，不同来源（CSDN/掘金/知乎/腾讯云/声网/GitHub Topics）存在差异，实时数据以 GitHub 页面为准。</p>
+    <p>• 排名仅含具体的 AI Agent Skill 仓库（SKILL.md 技能包/插件/工具链），已排除通用 AI 开源项目（如 AutoGPT、LangChain 等）。</p>
+    <p>• 平台标注说明：<span class="badge badge-official">官方</span> = Anthropic/OpenAI 官方出品；<span class="badge badge-claude">Claude</span> = 主要面向 Claude Code；<span class="badge badge-openclaw">OpenClaw</span> = 主要面向 OpenClaw；<span class="badge badge-cross">跨平台</span> = 兼容 3+ 平台。</p>
+    <p>• 据 Snyk 审计，13.4% 的公开 skills 存在严重安全问题。安装社区 skills 前建议：优先选官方/知名组织仓库，先 code review 再启用，用 git worktree 隔离测试。</p>
+  </div>
+</div>
+</body>
+</html>

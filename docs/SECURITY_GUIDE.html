@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>给 AI 装技能，还是装间谍？— AI Agent Skills 安全科普指南</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --c-purple-50: #EEEDFE; --c-purple-100: #CECBF6; --c-purple-600: #534AB7; --c-purple-800: #3C3489;
+    --c-teal-50: #E1F5EE; --c-teal-600: #0F6E56; --c-teal-800: #085041;
+    --c-coral-50: #FAECE7; --c-coral-100: #F5C4B3; --c-coral-600: #D85A30; --c-coral-800: #712B13;
+    --c-amber-50: #FAEEDA; --c-amber-100: #FAC775; --c-amber-600: #854F0B; --c-amber-800: #633806;
+    --c-red-50: #FCEBEB; --c-red-100: #F7C1C1; --c-red-600: #A32D2D; --c-red-800: #791F1F;
+    --c-gray-50: #F1EFE8; --c-gray-100: #D3D1C7; --c-gray-600: #5F5E5A;
+    --c-blue-50: #E6F1FB; --c-blue-600: #185FA5; --c-blue-800: #0C447C;
+    --text: #1a1a2e; --text-mute: #6b7280; --bg: #fafafa;
+    --radius: 12px; --radius-sm: 8px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; font-size: 15px; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .hero { text-align: center; margin-bottom: 56px; padding: 48px 32px; background: var(--c-purple-50); border-radius: 20px; }
+  .hero h1 { font-size: 30px; font-weight: 600; line-height: 1.4; color: var(--c-purple-800); margin-bottom: 12px; }
+  .hero .sub { font-size: 15px; color: var(--text-mute); }
+  .hero .meta { margin-top: 20px; font-size: 12px; color: var(--c-gray-600); }
+
+  h2 { font-size: 22px; font-weight: 600; margin: 48px 0 16px; color: var(--text); border-left: 4px solid var(--c-purple-600); padding-left: 14px; }
+  h3 { font-size: 17px; font-weight: 600; margin: 32px 0 12px; color: var(--text); }
+  p { margin-bottom: 14px; color: #374151; }
+  strong { font-weight: 600; color: var(--text); }
+  .highlight { background: var(--c-amber-50); padding: 2px 6px; border-radius: 4px; font-weight: 500; }
+
+  .callout { border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; }
+  .callout-danger { background: var(--c-red-50); border-left: 4px solid var(--c-red-600); }
+  .callout-warning { background: var(--c-amber-50); border-left: 4px solid var(--c-amber-600); }
+  .callout-info { background: var(--c-blue-50); border-left: 4px solid var(--c-blue-600); }
+  .callout-success { background: var(--c-teal-50); border-left: 4px solid var(--c-teal-600); }
+  .callout p { margin-bottom: 8px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+
+  .stat-row { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+  .stat-box { flex: 1; min-width: 140px; background: #fff; border-radius: var(--radius-sm); padding: 20px; text-align: center; border: 1px solid #e5e7eb; }
+  .stat-box .num { font-size: 32px; font-weight: 700; color: var(--c-coral-600); line-height: 1.2; }
+  .stat-box .label { font-size: 12px; color: var(--text-mute); margin-top: 4px; }
+  .stat-box.alt .num { color: var(--c-purple-600); }
+  .stat-box.alt2 .num { color: var(--c-amber-600); }
+
+  .risk-card { background: #fff; border-radius: var(--radius); padding: 20px 24px; margin: 16px 0; border: 1px solid #e5e7eb; }
+  .risk-card .head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .risk-card .tag { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 4px; }
+  .tag-critical { background: var(--c-red-50); color: var(--c-red-600); }
+  .tag-high { background: var(--c-coral-50); color: var(--c-coral-600); }
+  .tag-medium { background: var(--c-amber-50); color: var(--c-amber-600); }
+  .risk-card h4 { font-size: 15px; font-weight: 600; }
+  .risk-card p { font-size: 14px; margin-bottom: 6px; }
+  .risk-card .case { font-size: 13px; color: var(--text-mute); background: var(--c-gray-50); padding: 8px 12px; border-radius: 6px; margin-top: 8px; }
+
+  .step-list { counter-reset: step; margin: 24px 0; }
+  .step-item { position: relative; padding: 16px 16px 16px 56px; margin-bottom: 12px; background: #fff; border-radius: var(--radius-sm); border: 1px solid #e5e7eb; }
+  .step-item::before { counter-increment: step; content: counter(step); position: absolute; left: 16px; top: 16px; width: 28px; height: 28px; background: var(--c-purple-600); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+  .step-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .step-item p { font-size: 14px; margin-bottom: 4px; }
+
+  .tier-table { width: 100%; border-collapse: collapse; margin: 16px 0; background: #fff; border-radius: var(--radius); overflow: hidden; border: 1px solid #e5e7eb; }
+  .tier-table th { background: var(--c-purple-600); color: #fff; font-size: 13px; font-weight: 500; padding: 12px 14px; text-align: left; }
+  .tier-table td { padding: 12px 14px; font-size: 14px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  .tier-table tr:last-child td { border-bottom: none; }
+  .tier-badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 4px; }
+  .tier-green { background: var(--c-teal-50); color: var(--c-teal-600); }
+  .tier-yellow { background: var(--c-amber-50); color: var(--c-amber-600); }
+  .tier-red { background: var(--c-red-50); color: var(--c-red-600); }
+
+  .analogy { background: var(--c-purple-50); border-radius: var(--radius); padding: 24px; margin: 24px 0; }
+  .analogy .label { font-size: 12px; font-weight: 600; color: var(--c-purple-600); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .analogy p { font-size: 15px; color: var(--c-purple-800); }
+
+  .source-list { font-size: 12px; color: var(--text-mute); line-height: 2; margin-top: 32px; padding: 20px; background: #fff; border-radius: var(--radius); border: 1px solid #e5e7eb; }
+  .source-list strong { color: var(--text); }
+  .footer-note { text-align: center; margin-top: 40px; font-size: 13px; color: var(--text-mute); }
+
+  blockquote { border-left: 3px solid var(--c-purple-100); padding-left: 16px; margin: 16px 0; color: var(--text-mute); font-style: italic; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>给 AI 装技能，还是装间谍？</h1>
+    <p class="sub">AI Agent Skills 安全科普指南</p>
+    <div class="meta">2026 年 6 月 · 基于 OWASP Agentic Skills Top 10、NVIDIA SkillSpector 研究数据</div>
+  </div>
+
+  <h2>一、先搞懂：什么是 AI Agent Skill？</h2>
+
+  <div class="analogy">
+    <div class="label">一个类比</div>
+    <p>你买了一部新手机，裸机能用，但想拍照得装相机 App，想导航得装地图 App。AI Agent 也一样——Claude Code、OpenClaw 这些 AI 助手出厂时是"裸"的，装上 Skill（技能）之后才能干特定的事。</p>
+  </div>
+
+  <p>比如：</p>
+  <p>装了「文档处理」skill，AI 就能帮你读写 Word/PDF/Excel；装了「前端设计」skill，AI 写出的网页就不再是千篇一律的 AI 风格；装了「代码审查」skill，AI 就能像资深工程师一样帮你检查代码质量。</p>
+
+  <p>技术上，一个 Skill 本质上就是一个文件夹，核心是一个叫 <strong>SKILL.md</strong> 的 Markdown 文件，里面写着：什么时候触发、分几步执行、什么不能做、需要调用哪些工具。有些 skill 还会附带可执行脚本。</p>
+
+  <p>听起来很方便对吧？问题在于——<strong>这个文件里写的自然语言指令，AI 会原封不动地执行</strong>。如果指令是恶意的呢？</p>
+
+  <h2>二、问题的本质：AI 信任了它不该信任的东西</h2>
+
+  <div class="callout callout-danger">
+    <div class="callout-title">核心安全漏洞</div>
+    <p>当你安装一个 skill 时，它通常<strong>和 AI 助手拥有相同的权限</strong>——能读写你的文件、执行 shell 命令、发网络请求、访问环境变量里的 API 密钥。</p>
+    <p>安全模型更像浏览器扩展（能碰一切），而不是沙箱里的网页（被隔离）。但大多数用户以为它是后者。</p>
+  </div>
+
+  <p>这就好比你雇了一个保姆，你给了她你家钥匙、银行卡密码、快递柜权限。然后你在招聘网站上随便下载了一份"保姆工作手册"让她照着做——如果这份手册是坏人写的呢？她不会质疑，只会执行。</p>
+
+  <p>NVIDIA 在 2026 年 6 月发布了一项大规模研究，用自研的 SkillSpector 扫描器分析了 42,447 个公开 skill，结果令人不安：</p>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="num">26.1%</div>
+      <div class="label">含至少一个安全漏洞</div>
+    </div>
+    <div class="stat-box alt">
+      <div class="num">5.2%</div>
+      <div class="label">疑似恶意意图</div>
+    </div>
+    <div class="stat-box alt2">
+      <div class="num">2.12 倍</div>
+      <div class="label">含可执行脚本的 skill 风险倍数</div>
+    </div>
+  </div>
+
+  <p>翻译成大白话：<strong>每 4 个 skill 就有 1 个有漏洞，每 20 个就有 1 个疑似故意使坏。</strong>含可执行脚本的 skill 风险更是翻倍。</p>
+
+  <blockquote>
+    数据来源：Liu et al., "Agent Skills in the Wild", 2026。扫描工具 NVIDIA SkillSpector v2.0.0，覆盖 64 种漏洞模式 × 16 个分类。
+  </blockquote>
+
+  <h2>三、OWASP 官方：最严重的 10 种风险</h2>
+
+  <p>OWASP（开放式 Web 应用程序安全项目，就是发布过著名的"Web 安全 Top 10"的那个国际组织）在 2026 年 6 月发布了专门针对 AI Agent Skills 的安全风险榜单——<strong>Agentic Skills Top 10</strong>。</p>
+
+  <p>下面按严重程度分三层解读，尽量说人话。</p>
+
+  <h3>严重级（Critical）— 可以直接控制你的电脑</h3>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-critical">AST01</span>
+      <h4>恶意技能（Malicious Skills）</h4>
+    </div>
+    <p><strong>什么意思：</strong>攻击者把窃取密钥的指令藏在 SKILL.md 的自然语言里。你装上去之后，AI 会忠实地执行——把你的 API 密钥、SSH 凭证、钱包私钥发到攻击者的服务器。</p>
+    <div class="case">真实案例：ClawHavoc 攻击一次性向注册表注入了 1,184 个恶意 skill。ToxicSkills 项目审计发现了 76 个恶意载荷。</div>
+  </div>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-critical">AST02</span>
+      <h4>供应链妥协（Supply Chain Compromise）</h4>
+    </div>
+    <p><strong>什么意思：</strong>不是 skill 本身有问题，而是"分发渠道"被攻击了。比如 skill 注册表被投毒，或者 skill 依赖的某个包被篡改。仓库级配置文件可以在你确认信任之前就触发远程代码执行。</p>
+    <div class="case">真实案例：ClawHub 注册表大规模中毒事件、Claude Code CVE-2025-59536 漏洞。</div>
+  </div>
+
+  <h3>高危级（High）— 可能泄露你的数据</h3>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-high">AST03</span>
+      <h4>过度授权（Over-Privileged Skills）</h4>
+    </div>
+    <p><strong>什么意思：</strong>一个只需要"读取文件"的 skill，实际上被赋予了网络完全开放、文件系统完全访问的权限。就像你只想让保姆帮你取快递，却把整个家的钥匙都给了她。</p>
+    <div class="case">真实案例：Snyk 在 2026 年 2 月发现了 280+ 个存在凭证泄露的 skill。</div>
+  </div>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-high">AST04</span>
+      <h4>不安全元数据（Insecure Metadata）</h4>
+    </div>
+    <p><strong>什么意思：</strong>攻击者伪造 skill 的元数据，冒充知名品牌。比如在 ClawHub 上发布一个名叫"Google 搜索"的 skill，用户以为是 Google 官方出品就装了。</p>
+    <div class="case">真实案例：ClawHub 上的假冒"Google"技能仿冒事件。</div>
+  </div>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-high">AST05</span>
+      <h4>不安全反序列化（Unsafe Deserialization）</h4>
+    </div>
+    <p><strong>什么意思：</strong>SKILL.md 里的 YAML 配置如果用不安全的解析器处理，攻击者可以嵌入恶意代码。OWASP 测试发现，<strong>仅 3 行 Markdown 就能实现从配置文件到 Shell 访问的完整攻击链</strong>。</p>
+  </div>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-high">AST06</span>
+      <h4>弱隔离（Weak Isolation）</h4>
+    </div>
+    <p><strong>什么意思：</strong>AI skill 在你的电脑上运行时隔离不充分。攻击者可以利用这个弱点在你电脑上横向移动、窃取更多凭证、安装持久化后门。</p>
+    <div class="case">真实案例：OpenClaw 主机模式执行，超过 135,000 个暴露实例被发现。</div>
+  </div>
+
+  <h3>中危级（Medium）— 不直接攻击但放大风险</h3>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-medium">AST07</span>
+      <h4>更新漂移（Update Drift）</h4>
+    </div>
+    <p><strong>什么意思：</strong>你今天装的是安全 skill，明天作者仓库被劫持或被卖掉，下次更新时恶意代码就跟着进来了。也可以通过暴力破解本地 WebSocket 连接劫持你的 AI 助手。</p>
+    <div class="case">真实案例：ClawJacked（CVE-2026-28363，CVSS 评分 9.9 / 10）。</div>
+  </div>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-medium">AST08</span>
+      <h4>扫描不足（Poor Scanning）</h4>
+    </div>
+    <p><strong>什么意思：</strong>很多平台用简单的关键词匹配来检查 skill 是否安全，但恶意指令是用自然语言写的，模式匹配根本检测不到。这给用户造成虚假的安全感。</p>
+  </div>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-medium">AST09</span>
+      <h4>缺乏治理（No Governance）</h4>
+    </div>
+    <p><strong>什么意思：</strong>很多组织对自己部署了哪些 AI skill 毫无清单，安全运营中心完全看不到。超过 53,000 个暴露实例没有任何安全监控覆盖，"影子 AI"泛滥。</p>
+  </div>
+
+  <div class="risk-card">
+    <div class="head">
+      <span class="tag tag-medium">AST10</span>
+      <h4>跨平台复用（Cross-Platform Reuse）</h4>
+    </div>
+    <p><strong>什么意思：</strong>同一个恶意 skill 可以被移植到不同平台（OpenClaw、Claude Code、Cursor、VS Code），因为各平台格式不统一，安全元数据在迁移过程中丢失或削弱，相当于"换了个马甲"重新流通。</p>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">一个关键发现</div>
+    <p>OWASP 明确指出：<strong>这 10 个风险影响所有平台</strong>——不区分 Claude Code、OpenClaw、Cursor、Codex 还是 Gemini CLI。这是一个跨生态的系统性安全问题，没有任何平台能独善其身。</p>
+  </div>
+
+  <h2>四、普通用户怎么办：4 步识别法</h2>
+
+  <p>你不需要懂代码，也不需要会做安全审计。以下 4 步每步只需 30 秒到 1 分钟，能帮你过滤掉 90% 的风险。</p>
+
+  <div class="step-list">
+    <div class="step-item">
+      <h4>看出身（30 秒）</h4>
+      <p>看这个 skill 是谁做的。Anthropic / OpenAI / Vercel / NVIDIA 等官方出品的最安全；知名组织（Composio、Trail of Bits、科大讯飞）的可以放心；Star 超过 10K 且运营 6 个月以上的基本安全。个人开发者、Star 不到 1K、创建不到 3 个月的，必须仔细检查。</p>
+      <p><strong>绝对不装：</strong>没有 README、没有提交历史、明显是批量生成的。</p>
+    </div>
+    <div class="step-item">
+      <h4>看 SKILL.md 是否"说人话"（1 分钟）</h4>
+      <p>打开仓库找到 SKILL.md 文件，快速扫一遍。好的 skill 会清楚定义触发条件、输入输出、约束规则，并且有使用示例。</p>
+      <p><strong>危险信号：</strong>description 写成营销文案（"最强""终极""神器"）、没有任何约束规则、文件超过 500 行（说明职责不单一，可能藏了不该藏的东西）。</p>
+    </div>
+    <div class="step-item">
+      <h4>看有没有可执行脚本（30 秒）</h4>
+      <p>NVIDIA 数据显示含可执行脚本的 skill 风险高 2.12 倍。如果 skill 只有 Markdown 指令没有可执行脚本，风险大幅降低。</p>
+      <p>如果有 <code>scripts/</code> 目录，点进去看一眼。哪怕你看不懂代码，至少搜索一下有没有 <code>curl</code>、<code>wget</code>、<code>requests.post</code> 这些往外部发数据的关键词——如果有，而且你不是技术用户，建议不装。</p>
+    </div>
+    <div class="step-item">
+      <h4>看更新频率（30 秒）</h4>
+      <p>看仓库最近一次提交是什么时候。超过 3 个月没更新的 skill，很可能已经和当前版本的 AI 助手不兼容了——不兼容不是安全问题，但可能导致不可预期的行为。</p>
+    </div>
+  </div>
+
+  <h2>五、GitHub 高星 Skill 安全分级</h2>
+
+  <p>以下是截至 2026 年 6 月 GitHub Star 最高的 AI Agent Skill，按安全可信度分三档。</p>
+
+  <h3>闭眼装（官方或知名组织出品）</h3>
+
+  <table class="tier-table">
+    <thead>
+      <tr><th>Skill 名称</th><th>Star</th><th>安全理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>anthropics/skills</td><td>148K</td><td>Anthropic 官方技能库，生态标准参考实现</td></tr>
+      <tr><td>openai/skills</td><td>20K</td><td>OpenAI Codex 官方技能目录</td></tr>
+      <tr><td>vercel-labs/agent-skills</td><td>27K</td><td>Vercel 官方技能包（web-design-guidelines）</td></tr>
+      <tr><td>vercel-labs/skills</td><td>20K</td><td>Vercel 官方 CLI 工具链（npx skills）</td></tr>
+      <tr><td>trailofbits/skills</td><td>5K</td><td>顶级安全公司 Trail of Bits 出品，自带安全审计</td></tr>
+      <tr><td>iflytek/skillhub</td><td>4K</td><td>科大讯飞出品，企业级技能注册中心</td></tr>
+      <tr><td>remotion-dev/skills</td><td>3K</td><td>Remotion 官方视频制作技能包</td></tr>
+    </tbody>
+  </table>
+
+  <h3>放心装（高 Star + 长期维护 + 社区验证）</h3>
+
+  <table class="tier-table">
+    <thead>
+      <tr><th>Skill 名称</th><th>Star</th><th>安全理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>affaan-m/everything-claude-code</td><td>212K</td><td>最多人用的全能框架，内置 AgentShield 安全审计</td></tr>
+      <tr><td>obra/superpowers</td><td>200K</td><td>社区公认第一开发方法论，680K+ 安装量</td></tr>
+      <tr><td>ComposioHQ/awesome-claude-skills</td><td>64K</td><td>Composio 团队维护，集成平台背景</td></tr>
+      <tr><td>shanraisshan/claude-code-best-practice</td><td>58K</td><td>长期维护的最佳实践指南</td></tr>
+      <tr><td>hesreallyhim/awesome-claude-code</td><td>41K</td><td>仅收录 1K+ star 项目，有筛选门槛</td></tr>
+      <tr><td>K-Dense-AI/claude-scientific-skills</td><td>25K</td><td>科研领域垂直，用户群体明确</td></tr>
+      <tr><td>OthmanAdi/planning-with-files</td><td>22K</td><td>纯 Markdown 无脚本，零安全风险</td></tr>
+    </tbody>
+  </table>
+
+  <h3>需要看一眼再装</h3>
+
+  <table class="tier-table">
+    <thead>
+      <tr><th>Skill 名称</th><th>Star</th><th>注意事项</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>sickn33/antigravity-awesome-skills</td><td>35K</td><td>大合集（1,340+ skill），子 skill 未逐个审查</td></tr>
+      <tr><td>VoltAgent/awesome-openclaw-skills</td><td>50K</td><td>5,400+ skill 大合集，同上</td></tr>
+      <tr><td>alirezarezvani/claude-skills</td><td>19K</td><td>个人开发者，329 个 skill 需抽查</td></tr>
+      <tr><td>anbeime/skill</td><td>2K</td><td>自动抓取 GitHub 的聚合商店，来源混杂</td></tr>
+    </tbody>
+  </table>
+
+  <h2>六、如果只装 3 个</h2>
+
+  <div class="callout callout-success">
+    <div class="callout-title">社区共识推荐</div>
+    <p>这三个加起来覆盖了 80% 的日常需求，且全部无可执行脚本或来自官方，风险最低：</p>
+  </div>
+
+  <p><strong>1. anthropics/skills 的 frontend-design</strong> — Anthropic 官方出品，让 AI 写出的界面有设计感，不再是千篇一律的 AI 风格。周安装量超过 564K。</p>
+
+  <p><strong>2. obra/superpowers 的 brainstorming（单独装这一个就行）</strong> — 强制 AI 先想清楚再动手。没有这个 skill，AI 拿到需求就直接开写，常常方向偏了才发现；装了之后，它会先做需求分析、方案设计，确认无误后才动手。和资深工程师的工作方式一模一样。</p>
+
+  <p><strong>3. OthmanAdi/planning-with-files</strong> — 把计划从聊天记录里提取出来，变成可 diff、可 review、可交接的文件。纯 Markdown 无脚本，零安全风险。支持 17+ IDE 和 AI 助手。</p>
+
+  <h2>七、给技术用户的额外建议</h2>
+
+  <p>如果你有一定技术背景，还可以做这些：</p>
+
+  <p><strong>用 git worktree 隔离测试：</strong>不要直接在主项目里装 skill。创建一个独立的 worktree，在里面测试通过后再迁移到主项目。</p>
+
+  <p><strong>跑一遍 SkillSpector：</strong>NVIDIA 开源的安全扫描器，可以检测 64 种漏洞模式。</p>
+
+  <blockquote>
+    pip install skillspector<br>
+    skillspector scan ./my-skill/ --no-llm
+  </blockquote>
+
+  <p>评分 0-20 为 LOW（安全），21-50 为 MEDIUM（需审查），51-80 为 HIGH（不建议安装），81-100 为 CRITICAL（禁止安装）。</p>
+
+  <p><strong>用 .env 隔离敏感变量：</strong>不要让 AI 助手能访问到你的生产环境 API 密钥。为 AI 助手创建一个独立的 .env 文件，只放必要的、低权限的 key。</p>
+
+  <p><strong>锁定 skill 版本：</strong>不要用自动更新。锁定到经过审查的特定版本，更新时手动检查 diff。</p>
+
+  <h2>八、结语</h2>
+
+  <p>AI Agent Skills 生态让人想到 2015 年的浏览器扩展市场——早期、混乱、但充满可能性。它正在从"Claude 专属外挂"演化成"AI Agent 通用能力模块"，未来你写的一个 skill 可能同时跑在 Claude、Copilot、Cursor、Gemini 上。</p>
+
+  <p>但工具再多，核心问题不变：<strong>你要解决什么问题？</strong> 先想清楚需求，再去找对应的 skill，而不是反过来被工具推着走。</p>
+
+  <p>同时记住一个基本判断：<span class="highlight">Star 数高说明用的人多，但不等于安全</span>。4 步识别法（看出身、看 SKILL.md、看脚本、看更新频率）只需 2 分钟，能帮你避开绝大多数坑。</p>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">最后一句话</div>
+    <p>给 AI 装技能本身是对的——它让 AI 从"通用助手"变成"专业工匠"。但请像安装手机 App 一样保持警惕：看开发者、看权限、看评价。AI 行业的"App Store 审核"还在建设中，在那之前，你自己就是最后一道防线。</p>
+  </div>
+
+  <div class="source-list">
+    <strong>数据来源与参考文献：</strong><br>
+    1. OWASP Foundation, "Agentic Skills Top 10 v0.5", 2026年6月, https://owasp.org/www-project-agentic-skills-top-10/<br>
+    2. Liu et al., "Agent Skills in the Wild", 2026（NVIDIA SkillSpector 研究基础，扫描 42,447 个 skills）<br>
+    3. NVIDIA, "SkillSpector: Security Scanner for AI Agent Skills v2.0.0", 2026年6月, https://github.com/NVIDIA/SkillSpector（Apache 2.0）<br>
+    4. Snyk, "AI Agent Skills Security Audit", 2026年2月（发现 280+ 凭证泄露技能）<br>
+    5. Microsoft Security Blog, "When prompts become shells: RCE vulnerabilities in AI agent frameworks", 2026年5月7日<br>
+    6. Anthropic, "anthropics/skills 官方技能仓库", 2026年5月17日开源, https://github.com/anthropics/skills<br>
+    7. arXiv:2601.17548, "Prompt Injection Attacks on Agentic Coding Assistants: A SoK", 2026年1月24日<br>
+    8. GitHub Topics: claude-code-skills / openclaw-skills（Star 数据快照，2026年5-6月）<br><br>
+    <strong>免责声明：</strong>本文 Star 数据为 2026 年 5-6 月多源快照，不同来源存在差异，实时数据以 GitHub 页面为准。安全风险分类基于 OWASP 和 NVIDIA 研究报告，具体 skill 的安全性以最新审计结果为准。本文不构成安全建议，仅供参考。
+  </div>
+
+  <div class="footer-note">
+    AI Agent Skills 安全科普指南 · 2026 年 6 月 · 共建安全的 AI 生态
+  </div>
+
+</div>
+</body>
+</html>
