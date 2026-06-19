@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Skills Rank - AI Agent Skills 多维排名</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f8f9fa;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+    header { text-align: center; margin-bottom: 48px; }
+    header h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; color: #111827; }
+    header p { font-size: 16px; color: #6b7280; max-width: 600px; margin: 0 auto; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .card h2 { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #111827; }
+    .card p { font-size: 14px; color: #6b7280; margin-bottom: 12px; }
+    .card .meta { font-size: 12px; color: #9ca3af; }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .badge-star { background: #fef3c7; color: #92400e; }
+    .badge-activity { background: #dbeafe; color: #1e40af; }
+    .badge-security { background: #fee2e2; color: #991b1b; }
+    .badge-cn { background: #dcfce7; color: #166534; }
+    .badge-made { background: #f3e8ff; color: #7c3aed; }
+    .guide-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+    }
+    .guide-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 12px; color: #111827; }
+    .guide-card a { color: #2563eb; text-decoration: none; }
+    .guide-card a:hover { text-decoration: underline; }
+    footer { text-align: center; font-size: 12px; color: #9ca3af; margin-top: 48px; }
+    footer a { color: #6b7280; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 640px) {
+      header h1 { font-size: 28px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AI Skills Rank</h1>
+      <p>AI Agent Skills 的"大众点评" — 不只看 Star，更看活跃度、安全、中文友好度和国产创作实力。</p>
+    </header>
+
+    <div class="grid">
+      <a class="card" href="../reports/2026-06/top50-ai-skills-2026-06.html">
+        <span class="badge badge-star">热度</span>
+        <h2>Star 榜单 Top 50</h2>
+        <p>按 GitHub Star 数和增速排名，看当前最受关注的 AI Agent Skills。</p>
+        <div class="meta">更新频率：每月 1 号</div>
+      </a>
+
+      <a class="card" href="../reports/2026-06/active-ai-skills-2026-06.html">
+        <span class="badge badge-activity">活跃度</span>
+        <h2>活跃度榜单 Top 30</h2>
+        <p>按 commit 频率、贡献者数量和最近维护时间排名，识别还在认真维护的项目。</p>
+        <div class="meta">更新频率：每月 2 号</div>
+      </a>
+
+      <a class="card" href="../reports/2026-06/secure-ai-skills-2026-06.html">
+        <span class="badge badge-security">安全</span>
+        <h2>安全分级榜单 Top 30</h2>
+        <p>基于出品方、脚本风险、文档质量、社区审查等 6 维评估，帮你判断哪些 skill 可以放心装。</p>
+        <div class="meta">更新频率：每月 3 号</div>
+      </a>
+
+      <a class="card" href="../reports/2026-06/cn-friendly-skills-2026-06.html">
+        <span class="badge badge-cn">中文友好</span>
+        <h2>中文友好榜单 Top 30</h2>
+        <p>评估中文文档、国内社区讨论度、国产生态适配，筛选中文用户友好的 skill。</p>
+        <div class="meta">更新频率：每月 4 号</div>
+      </a>
+
+      <a class="card" href="../reports/2026-06/cn-made-skills-2026-06.html">
+        <span class="badge badge-made">国产创作</span>
+        <h2>国产创作榜单 Top 20</h2>
+        <p>发现中国开发者/团队创作的 AI Agent Skills，看国产创新力量。</p>
+        <div class="meta">更新频率：每月 5 号</div>
+      </a>
+    </div>
+
+    <div class="guide-card">
+      <h2>安全科普必读</h2>
+      <p>AI Agent Skills 生态存在恶意 skill、过度授权、供应链投毒等风险。NVIDIA 扫描显示 <strong>26.1% 的 skill 含至少一个漏洞</strong>。</p>
+      <p>阅读完整指南：<a href="SECURITY_GUIDE.html">AI Agent Skills 安全指南</a></p>
+    </div>
+
+    <footer>
+      <p>数据来源：GitHub API · 评分模型：<a href="https://github.com/silenceite/ai-skills-rank">silenceite/ai-skills-rank</a></p>
+      <p style="margin-top: 8px;">数据仅供参考，排名不构成推荐或背书。</p>
+    </footer>
+  </div>
+</body>
+</html>
