@@ -263,8 +263,8 @@ git push origin feature/new-skill-submission
 
 ## 联系方式
 
-- **GitHub Issues**：[提交问题或建议](https://github.com/your-username/ai-skills-rank/issues)
-- **邮箱**：your-email@example.com
+- **GitHub Issues**：[提交问题或建议](https://github.com/silenceite/ai-skills-rank/issues)
+- **邮箱**：jien-2009@163.com
 
 ---
 
