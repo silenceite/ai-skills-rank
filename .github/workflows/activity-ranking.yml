@@ -1,18 +1,17 @@
-name: Star Ranking (每月1号)
+name: Activity Ranking (每月2号)
 
 on:
   schedule:
-    # 每月1号 UTC 02:00 = 北京时间 10:00
-    - cron: '0 2 1 * *'
+    # 每月2号 UTC 02:00 = 北京时间 10:00
+    - cron: '0 2 2 * *'
   workflow_dispatch:
-    # 支持手动触发
 
 permissions:
   contents: write
   pages: write
 
 jobs:
-  generate-star-ranking:
+  generate-activity-ranking:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -34,31 +33,31 @@ jobs:
       - name: Create report directory
         run: mkdir -p reports/${{ steps.date.outputs.month }}
 
-      - name: Run star ranking collector
+      - name: Run activity ranking collector
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COLLECTOR_TOKEN: ${{ secrets.COLLECTOR_TOKEN }}
         run: |
-          python scripts/collect_star.py --output reports/${{ steps.date.outputs.month }}/top50-ai-skills-${{ steps.date.outputs.month }}.html
+          python scripts/collect_activity.py --output reports/${{ steps.date.outputs.month }}/active-ai-skills-${{ steps.date.outputs.month }}.html
 
       - name: Generate report
         if: always()
         run: |
-          python scripts/generate_report.py --type star --month ${{ steps.date.outputs.month }} || true
+          python scripts/generate_report.py --type activity --month ${{ steps.date.outputs.month }} || true
 
       - name: Commit report
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add reports/
-          git commit -m "data: star ranking ${{ steps.date.outputs.month }}" || echo "No changes to commit"
+          git commit -m "data: activity ranking ${{ steps.date.outputs.month }}" || echo "No changes to commit"
           git push
 
       - name: Update GitHub Pages
         if: always()
         run: |
           mkdir -p docs/latest
-          cp reports/${{ steps.date.outputs.month }}/top50-ai-skills-*.html docs/latest/star-ranking.html || true
+          cp reports/${{ steps.date.outputs.month }}/active-ai-skills-*.html docs/latest/activity-ranking.html || true
           git add docs/
-          git commit -m "pages: update star ranking" || echo "No changes"
+          git commit -m "pages: update activity ranking" || echo "No changes"
           git push
