@@ -1,9 +1,9 @@
-name: Trending Ranking (每周日晚8点 · 飙升榜)
+name: Trending Ranking (每月28号晚8点 · 飙升榜)
 
 on:
   schedule:
-    # 每周日 UTC 12:00 = 北京时间 20:00
-    - cron: '0 12 * * 0'
+    # 每月28号 UTC 12:00 = 北京时间 20:00
+    - cron: '0 12 28 * *'
   workflow_dispatch:
 
 permissions:
@@ -29,10 +29,6 @@ jobs:
         id: date
         run: echo "month=$(date +'%Y-%m')" >> $GITHUB_OUTPUT
 
-      - name: Get week info
-        id: week
-        run: echo "week=$(date +'%Y-W%V')" >> $GITHUB_OUTPUT
-
       - name: Create report directory
         run: mkdir -p reports/${{ steps.date.outputs.month }}
 
@@ -40,14 +36,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python scripts/collect_trending.py --output reports/${{ steps.date.outputs.month }}/trending-skills-${{ steps.week.outputs.week }}.html --month ${{ steps.date.outputs.month }}
+          python scripts/collect_trending.py --output reports/${{ steps.date.outputs.month }}/trending-skills-${{ steps.date.outputs.month }}.html --month ${{ steps.date.outputs.month }}
 
       - name: Commit report
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add reports/
-          git commit -m "data: trending ranking ${{ steps.week.outputs.week }}" || echo "No changes to commit"
+          git commit -m "data: trending ranking ${{ steps.date.outputs.month }}" || echo "No changes to commit"
           git push
 
       - name: Update GitHub Pages
@@ -56,7 +52,7 @@ jobs:
           mkdir -p docs/reports/${{ steps.date.outputs.month }}
           cp reports/${{ steps.date.outputs.month }}/trending-skills-*.html docs/reports/${{ steps.date.outputs.month }}/ || true
           mkdir -p docs/latest
-          cp reports/${{ steps.date.outputs.month }}/trending-skills-*.html docs/latest/trending-ranking.html || true
+          cp reports/${{ steps.date.outputs.month }}/trending-skills-${{ steps.date.outputs.month }}.html docs/latest/trending-ranking.html || true
           git add docs/
           git commit -m "pages: update trending ranking" || echo "No changes"
           git push
