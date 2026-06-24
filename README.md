@@ -1,4 +1,4 @@
-# AI Skills Rank
+# AI Agent Skills Rank
 
 > AI Agent Skills 的"大众点评" — 不只看 Star，更看活跃度、安全性和中文友好度。
 >
@@ -14,17 +14,18 @@ AI Agent Skills 生态在 2026 年爆发——GitHub 上已有 1,400+ 个 skill 
 2. **Star 陷阱**：高 Star ≠ 安全（26.1% 含漏洞，5.2% 疑似恶意）
 3. **中文用户断层**：纯英文生态使用门槛高
 
-**AI Skills Rank** 通过 **5 个维度的月度榜单**，帮助用户回答三个核心问题：
+**AI Agent Skills Rank** 通过 **6 个维度的榜单**，帮助用户回答四个核心问题：
 
 - 谁最火？
+- 谁正在火？
 - 谁还在认真维护？
 - 谁可以放心装？
 
 ---
 
-## 五榜单体系
+## 六榜单体系
 
-每月 1-5 号连续发布 5 份报告，覆盖 skill 评估的全生命周期：
+每月 1-5 号及每周日连续发布 6 份报告，覆盖 skill 评估的全生命周期：
 
 | 日期 | 榜单 | Top | 核心问题 | 评分维度 |
 |------|------|-----|---------|---------|
@@ -33,6 +34,7 @@ AI Agent Skills 生态在 2026 年爆发——GitHub 上已有 1,400+ 个 skill 
 | 3 号 | 安全分级榜单 | 30 | 谁可以放心装 | 6 维安全评估 |
 | 4 号 | 中文友好榜单 | 30 | 中文用户看得懂吗 | 5 维中文友好度 |
 | 5 号 | 国产创作榜单 | 20 | 中国开发者做了什么 | 5 维国产评估 |
+| 每周日 | 🚀 飙升榜 | 30 | 谁正在爆火 | GitHub Trending weekly 新增 Star |
 
 ---
 
@@ -137,6 +139,7 @@ ai-skills-rank/
 │   ├── collect_security.py
 │   ├── collect_cn_friendly.py
 │   ├── collect_cn_made.py
+│   ├── collect_trending.py       # 飙升榜（每周日）
 │   ├── scoring.py
 │   └── generate_report.py
 ├── reports/                     # 月度报告（按年月归档）
@@ -175,13 +178,14 @@ python scripts/generate_report.py
 
 ### 自动化运行
 
-项目已配置 GitHub Actions，每月 1-5 号自动执行采集和报告生成：
+项目已配置 GitHub Actions，6 个 workflow 自动执行采集和报告生成：
 
 - 1 号 10:00 UTC — Star 榜单
 - 2 号 10:00 UTC — 活跃度榜单
 - 3 号 10:00 UTC — 安全分级榜单
 - 4 号 10:00 UTC — 中文友好榜单
 - 5 号 10:00 UTC — 国产创作榜单
+- 每周日 12:00 UTC — 🚀 飙升榜
 
 ---
 
@@ -268,7 +272,7 @@ git push origin feature/new-skill-submission
 
 ---
 
-*AI Skills Rank · 让每一个 AI Agent Skill 都被看见、被评估、被信任*
+*AI Agent Skills Rank · 让每一个 AI Agent Skill 都被看见、被评估、被信任*
 # ai-skills-rank
 AI Agent Skills 多维评估榜单 — 不只看 Star，更看活跃度、安全性和中文友好度
 

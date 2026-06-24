@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Skills Rank - AI Agent Skills 多维排名</title>
+  <title>AI Agent Skills Rank - AI Agent Skills 多维排名</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -50,6 +50,7 @@
     .badge-security { background: #fee2e2; color: #991b1b; }
     .badge-cn { background: #dcfce7; color: #166534; }
     .badge-made { background: #f3e8ff; color: #7c3aed; }
+    .badge-trending { background: #ffedd5; color: #9a3412; }
     .guide-card {
       background: #fff;
       border-radius: 12px;
@@ -73,7 +74,7 @@
 <body>
   <div class="container">
     <header>
-      <h1>AI Skills Rank</h1>
+      <h1>AI Agent Skills Rank</h1>
       <p>AI Agent Skills 的"大众点评" — 不只看 Star，更看活跃度、安全、中文友好度和国产创作实力。</p>
     </header>
 
@@ -111,6 +112,13 @@
         <h2>国产创作榜单 Top 20</h2>
         <p>发现中国开发者/团队创作的 AI Agent Skills，看国产创新力量。</p>
         <div class="meta">更新频率：每月 5 号</div>
+      </a>
+
+      <a class="card" href="latest/trending-ranking.html">
+        <span class="badge badge-trending">飙升</span>
+        <h2>飙升榜 Top 30</h2>
+        <p>抓取 GitHub Trending weekly，筛选本周新增 Star 最猛的 Agent Skill 项目，看谁正在爆火。</p>
+        <div class="meta">更新频率：每周日晚 8 点</div>
       </a>
     </div>
 
