@@ -49,7 +49,7 @@ SKILL_DESC_KEYWORDS = [
     "agent for", "agent toolkit",
 ]
 
-TRENDING_URL = "https://github.com/trending?since=weekly"
+TRENDING_URL = "https://github.com/trending?since=monthly"
 
 # 反爬退避策略
 MAX_RETRIES = 3
