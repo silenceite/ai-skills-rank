@@ -153,7 +153,7 @@ def parse_trending_repos(html):
             description = re.sub(r'<[^>]+>', '', desc_match.group(1)).strip()
 
         # 提取本周新增 star
-        weekly_match = re.search(r'(\d[\d,]*)\s+stars?\s+this\s+week', context, re.IGNORECASE)
+        weekly_match = re.search(r'(\d[\d,]*)\s+stars?\s+this\s+(?:week|month)', context, re.IGNORECASE)
         weekly_stars = parse_number(weekly_match.group(1)) if weekly_match else 0
 
         # 提取总 star（stargazers 链接）
