@@ -206,6 +206,10 @@ def is_agent_skill_repo(repo):
         if keyword in desc:
             return True
 
+    # 描述中包含 "AI" 独立词（如 "AI tool", "AI-powered"）或 "OpenAI"
+    if re.search(r'\bai\b', desc) or "openai" in desc:
+        return True
+
     # 仓库名直接包含 skill 且描述涉及 agent/AI
     if "skill" in name and ("agent" in desc or "claude" in desc or "ai " in desc):
         return True
