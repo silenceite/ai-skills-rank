@@ -2,7 +2,7 @@
 
 > AI Agent Skills 的"大众点评" — 不只看 Star，更看活跃度、安全性和中文友好度。
 >
-> English | [中文](./README_CN.md)
+> [中文](./README.md) | [English](./README_EN.md)
 
 ---
 
@@ -128,7 +128,8 @@ AI Agent Skills 生态在 2026 年爆发——GitHub 上已有 1,400+ 个 skill 
 
 ```
 ai-skills-rank/
-├── README.md                    # 项目介绍（本文件）
+├── README.md                    # 项目介绍（中文）
+├── README_EN.md                 # 项目介绍（英文）
 ├── docs/
 │   ├── PROJECT_PLAN.md          # 项目计划书
 │   ├── SCORING_MODELS.md        # 评分模型详解
@@ -273,6 +274,3 @@ git push origin feature/new-skill-submission
 ---
 
 *AI Agent Skills Rank · 让每一个 AI Agent Skill 都被看见、被评估、被信任*
-# ai-skills-rank
-AI Agent Skills 多维评估榜单 — 不只看 Star，更看活跃度、安全性和中文友好度
-
