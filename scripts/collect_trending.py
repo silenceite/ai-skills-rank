@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 AI Agent Skills Rank — Trending Ranking Collector
-抓取 GitHub Trending weekly 页面，筛选 AI Agent Skill 相关仓库，
-按本周新增 Star 排序，生成 Top 30 飙升榜 HTML 报告。
+抓取 GitHub Trending weekly 页面，筛选 AI / Agent / MCP 相关仓库，
+按本月新增 Star 排序，生成 Top 30 飙升榜 HTML 报告。
 
-执行频率：每周日 UTC 12:00（北京时间 20:00）
+执行频率：每月 28 号 UTC 12:00（北京时间 20:00）
 """
 import argparse
 import json
@@ -341,13 +341,13 @@ td.stars:last-child {{ color: #534AB7; }}
 <body>
 <div class="container">
   <h1>🚀 AI Agent Skills 飙升榜 Top {len(repos)}</h1>
-  <p class="subtitle">数据来源：GitHub Trending weekly · 更新：{now} · 报告月份：{month}</p>
+  <p class="subtitle">数据来源：GitHub Trending · 更新：{now} · 报告月份：{month}</p>
 
   <div class="summary">
-    <div class="stat-card"><div class="label">本周上榜</div><div class="value">{len(repos)}</div></div>
-    <div class="stat-card"><div class="label">最高周增</div><div class="value">{max_weekly}</div></div>
+    <div class="stat-card"><div class="label">本月上榜</div><div class="value">{len(repos)}</div></div>
+    <div class="stat-card"><div class="label">最高月增</div><div class="value">{max_weekly}</div></div>
     <div class="stat-card"><div class="label">数据来源</div><div class="value">GitHub Trending</div></div>
-    <div class="stat-card"><div class="label">更新周期</div><div class="value">每周日</div></div>
+    <div class="stat-card"><div class="label">更新周期</div><div class="value">每月28号</div></div>
   </div>
 
   <table>
@@ -355,7 +355,7 @@ td.stars:last-child {{ color: #534AB7; }}
       <tr>
         <th># 飙升</th>
         <th>仓库名称 / 核心功能</th>
-        <th>本周新增 ⭐</th>
+        <th>本月新增 ⭐</th>
         <th>总 Star</th>
         <th>语言</th>
       </tr>
@@ -369,7 +369,7 @@ td.stars:last-child {{ color: #534AB7; }}
     <p><strong>数据说明：</strong></p>
     <p>• 数据来自 <a href="https://github.com/trending?since=weekly" target="_blank">GitHub Trending weekly</a> 页面，筛选 AI / Agent / MCP 相关热门项目</p>
     <p>• 筛选逻辑：仓库名匹配 skill/agent/mcp 模式，或描述中含 AI agent / coding agent / MCP / Claude Code 等关键词</p>
-    <p>• 榜单按本周新增 Star 降序排列，反映当前 GitHub 上"正在爆火"的 AI Agent 生态项目</p>
+    <p>• 榜单按本月新增 Star 降序排列，反映当前 GitHub 上"正在爆火"的 AI Agent 生态项目</p>
     <p>• 生成时间：{now} · 采集脚本：collect_trending.py v1.0</p>
   </div>
 </div>
