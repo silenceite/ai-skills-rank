@@ -19,25 +19,34 @@ from html import escape
 
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 
-# 筛选关键词：判定是否为 AI Agent Skill 仓库
+# 筛选关键词：判定是否为 AI/Agent 相关项目
 SKILL_NAME_PATTERNS = [
     r"-skills$", r"^skills-",           # 以 -skills 结尾或 skills- 开头
     r"agent-skills?", r"skills?-agent",  # 含 agent-skill
     r"-mcp$", r"^mcp-",                 # MCP 服务器
-    r"agent-",                           # agent- 前缀（如 agent-reach, agent-tool）
+    r"^ai-", r"-ai$",                   # AI 前缀后缀
+    r"agent-",                           # agent- 前缀
 ]
 SKILL_DESC_KEYWORDS = [
-    "agent skill", "agent skills",            # 直接提及 agent skill
-    "agent-skills",                            # topic 格式
-    "SKILL.md", "skill.md",                   # 明确引用 SKILL.md 格式
-    "claude-code skills", "claude code skills",# Claude Code skills
-    "skills for ai agent", "skills for agent", # skills for AI agents
-    "ai coding skills", "agentic skill",       # 变体
-    "mcp server", "mcp skill",                 # MCP 生态
-    "agent tool", "ai agent tool",             # Agent 工具
-    "claude code plugin", "codex skill",       # 各平台 skill
-    "claude skills", "cursor skills",          # 平台 skills
-    "ai agent skills", "agent skills repo",    # 直接匹配
+    # Agent/Skill 核心
+    "agent skill", "agent skills", "agent-skills",
+    "SKILL.md", "skill.md",
+    "skills for ai", "skills for agent", "ai skills",
+    "agentic skill", "agentic",
+    # MCP 生态
+    "mcp server", "mcp skill", "mcp ",
+    # Claude/Codex/Cursor 生态
+    "claude code", "claude-code", "claude skills",
+    "codex skill", "cursor skill", "cursor agent",
+    # AI Agent 相关
+    "ai agent", "ai agents", "agent framework",
+    "coding agent", "ai coding", "ai-powered",
+    "agent tool", "ai agent tool",
+    # AI 开发工具
+    "ai voice", "ai studio", "llm",
+    "system prompt", "language model",
+    # 通用 AI+Skill
+    "agent for", "agent toolkit",
 ]
 
 TRENDING_URL = "https://github.com/trending?since=weekly"
@@ -358,8 +367,9 @@ td.stars:last-child {{ color: #534AB7; }}
 
   <div class="footer">
     <p><strong>数据说明：</strong></p>
-    <p>• 数据来自 <a href="https://github.com/trending?since=weekly" target="_blank">GitHub Trending weekly</a> 页面，展示本周 GitHub 全站热门仓库</p>
-    <p>• 榜单按本周新增 Star 降序排列，反映当前 GitHub 上"正在爆火"的项目</p>
+    <p>• 数据来自 <a href="https://github.com/trending?since=weekly" target="_blank">GitHub Trending weekly</a> 页面，筛选 AI / Agent / MCP 相关热门项目</p>
+    <p>• 筛选逻辑：仓库名匹配 skill/agent/mcp 模式，或描述中含 AI agent / coding agent / MCP / Claude Code 等关键词</p>
+    <p>• 榜单按本周新增 Star 降序排列，反映当前 GitHub 上"正在爆火"的 AI Agent 生态项目</p>
     <p>• 生成时间：{now} · 采集脚本：collect_trending.py v1.0</p>
   </div>
 </div>
@@ -393,11 +403,11 @@ def main():
         # 生成空报告
         repos = []
 
-    # 3. 不过滤，直接使用所有 Trending 仓库
-    # (Agent Skill 筛选逻辑保留备用，需要时取消注释即可)
-    # skill_repos = filter_agent_skills(repos)
-    skill_repos = repos
-    print(f"[Trending] Using all {len(skill_repos)} trending repos (filter disabled)", file=sys.stderr)
+    # 3. 放宽筛选：AI/Agent/MCP 相关项目
+    skill_repos = filter_agent_skills(repos)
+    print(f"[Trending] Filtered {len(skill_repos)} AI/Agent repos from {len(repos)} total", file=sys.stderr)
+    for r in skill_repos:
+        print(f"  ✓ {r['full_name']}: +{r['weekly_stars']:,} this week", file=sys.stderr)
 
     # 4. 按本周新增 Star 降序排列
     skill_repos.sort(key=lambda x: x["weekly_stars"], reverse=True)
