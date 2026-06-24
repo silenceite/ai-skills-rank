@@ -358,9 +358,8 @@ td.stars:last-child {{ color: #534AB7; }}
 
   <div class="footer">
     <p><strong>数据说明：</strong></p>
-    <p>• 数据来自 <a href="https://github.com/trending?since=weekly" target="_blank">GitHub Trending weekly</a> 页面，筛选 AI Agent Skill 相关仓库</p>
-    <p>• 筛选逻辑：仓库名匹配 skill/agent-skills 模式，或描述中包含 agent skill / claude code / SKILL.md 等关键词</p>
-    <p>• 榜单按本周新增 Star 降序排列，反映当前 GitHub 上"正在爆火"的 Agent Skill 项目</p>
+    <p>• 数据来自 <a href="https://github.com/trending?since=weekly" target="_blank">GitHub Trending weekly</a> 页面，展示本周 GitHub 全站热门仓库</p>
+    <p>• 榜单按本周新增 Star 降序排列，反映当前 GitHub 上"正在爆火"的项目</p>
     <p>• 生成时间：{now} · 采集脚本：collect_trending.py v1.0</p>
   </div>
 </div>
