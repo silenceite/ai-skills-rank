@@ -181,6 +181,7 @@ def generate_html(repos, month):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23534AB7'/><text x='16' y='23' text-anchor='middle' font-size='16' font-weight='bold' fill='white' font-family='system-ui'>AS</text></svg>">
 <title>GitHub Star 最高的 50 个 AI Agent Skill — {month}</title>
 <style>
   * {{ margin: 0; padding: 0; box-sizing: border-box; }}
