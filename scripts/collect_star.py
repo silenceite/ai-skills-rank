@@ -181,6 +181,12 @@ def generate_html(repos, month):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GitHub Star 最高的 50 个 AI Agent Skill 排行榜，每月自动更新。数据来自 GitHub API，按 Star 数降序排列，标注安全等级和平台支持。">
+<meta property="og:title" content="AI Agent Skills Star 榜单 Top 50 — {month}">
+<meta property="og:description" content="GitHub 上 Star 最高的 50 个 AI Agent Skill，按热度排名。每月 1 号自动更新。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Agent Skills Star 榜单 Top 50 — {month}">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23534AB7'/><text x='16' y='23' text-anchor='middle' font-size='16' font-weight='bold' fill='white' font-family='system-ui'>AS</text></svg>">
 <title>GitHub Star 最高的 50 个 AI Agent Skill — {month}</title>
 <style>

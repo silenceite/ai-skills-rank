@@ -309,6 +309,12 @@ def generate_html(repos, month):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI Agent Skills 飙升榜 Top 30。抓取 GitHub Trending 页面，筛选 AI / Agent / MCP 相关热门项目，按本月新增 Star 排序。每月 28 号自动更新。">
+<meta property="og:title" content="AI Agent Skills 飙升榜 · {month}">
+<meta property="og:description" content="本月哪个 AI Agent Skill 最火？GitHub Trending 实时热度排名，每月自动更新。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Agent Skills 飙升榜 · {month}">
 <title>AI Agent Skills 飙升榜 · {month}</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23534AB7'/><text x='16' y='23' text-anchor='middle' font-size='16' font-weight='bold' fill='white' font-family='system-ui'>AS</text></svg>">
 <style>

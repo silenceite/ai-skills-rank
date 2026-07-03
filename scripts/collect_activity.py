@@ -140,6 +140,10 @@ def generate_html(repos, month):
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="按 commit 频率、贡献者数量、Push 新近度排名的 AI Agent Skill 活跃度榜单 Top 30。识别还在认真维护的项目。每月 2 号自动更新。">
+<meta property="og:title" content="AI Agent Skills 活跃度榜单 Top 30 — {month}">
+<meta property="og:description" content="谁还在认真维护？基于 commit 频率、贡献者活跃度排名的 AI Skill 榜单，每月更新。">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23534AB7'/><text x='16' y='23' text-anchor='middle' font-size='16' font-weight='bold' fill='white' font-family='system-ui'>AS</text></svg>">
 <title>AI Agent Skills 活跃度榜单 Top 30 — {month}</title>
 <style>
