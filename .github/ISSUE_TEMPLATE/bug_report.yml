@@ -1,0 +1,32 @@
+name: 🐛 报告数据错误
+description: 发现评分有误、数据异常、链接失效等问题
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: 哪个页面
+      description: 出错的榜单页面链接
+      placeholder: "https://silenceite.github.io/ai-skills-rank/reports/2026-07/top50-ai-skills-2026-07.html"
+    validations:
+      required: true
+  - type: input
+    id: repo
+    attributes:
+      label: 哪个仓库
+      description: 数据有问题的 skill 仓库名
+      placeholder: "owner/repo-name"
+  - type: textarea
+    id: problem
+    attributes:
+      label: 具体问题
+      description: 描述你发现的错误
+      placeholder: "例如：Star 数不准确 / 安全等级误判 / 仓库已归档仍上榜"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+      placeholder: "实际 Star 数应为..."

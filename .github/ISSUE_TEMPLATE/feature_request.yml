@@ -1,0 +1,16 @@
+name: 💡 功能建议
+description: 建议新增功能或改进评分模型
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: 建议描述
+      placeholder: "希望增加 XX 功能 / 改进 XX 评分维度"
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: 为什么需要

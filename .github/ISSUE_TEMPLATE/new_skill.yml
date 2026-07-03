@@ -1,0 +1,32 @@
+name: ➕ 推荐新 Skill
+description: 发现遗漏的 AI Agent Skill 仓库，推荐收录
+title: "[Add] "
+labels: [new-skill]
+body:
+  - type: input
+    id: repo
+    attributes:
+      label: 仓库名
+      description: GitHub 仓库全名
+      placeholder: "owner/repo-name"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 平台
+      options: [Claude Code, Cursor, Codex CLI, Gemini CLI, OpenClaw, GitHub Copilot, 跨平台, 其他]
+  - type: textarea
+    id: reason
+    attributes:
+      label: 推荐理由
+      placeholder: "这个 Skill 做什么的？为什么值得收录？有什么亮点？"
+    validations:
+      required: true
+  - type: checkboxes
+    id: check
+    attributes:
+      label: 确认
+      options:
+        - label: 已确认该仓库不在当前榜单中
+        - label: 仓库是公开的且有 SKILL.md 文件

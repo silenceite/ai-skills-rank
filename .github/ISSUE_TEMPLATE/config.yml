@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 查看榜单
+    url: https://silenceite.github.io/ai-skills-rank/
+    about: 先看看你的 Skill 是否已经在榜单中了
+  - name: 🛡️ 安全指南
+    url: https://silenceite.github.io/ai-skills-rank/SECURITY_GUIDE.html
+    about: 安装 Skill 前必读的安全科普
