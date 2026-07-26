@@ -15,18 +15,48 @@ body:
     id: repo
     attributes:
       label: 哪个仓库
-      description: 数据有问题的 skill 仓库名
+      description: 数据有问题的 skill 仓库全名
       placeholder: "owner/repo-name"
+    validations:
+      required: true
+  - type: dropdown
+    id: error_type
+    attributes:
+      label: 错误类型
+      description: 选择最贴近的问题类别
+      options:
+        - Star 数不准确
+        - 平台归属错误
+        - 安全等级误判
+        - 描述信息错误
+        - 仓库已归档/删除仍上榜
+        - 链接失效（404）
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: current_value
+    attributes:
+      label: 当前显示值
+      description: 报告里现在写的是什么（如 Star 数、平台、安全等级）
+      placeholder: "例如：Star 157,879 / 平台=Claude Code"
+  - type: input
+    id: correct_value
+    attributes:
+      label: 你认为正确的值
+      description: 你掌握的真实数据是什么
+      placeholder: "例如：实际 Star 162,300 / 应为跨平台"
   - type: textarea
     id: problem
     attributes:
       label: 具体问题
-      description: 描述你发现的错误
-      placeholder: "例如：Star 数不准确 / 安全等级误判 / 仓库已归档仍上榜"
+      description: 补充描述你发现的错误及发现方式
+      placeholder: "例如：通过 GitHub API 查询发现 Star 数偏差较大"
     validations:
       required: true
-  - type: textarea
-    id: expected
+  - type: input
+    id: evidence
     attributes:
-      label: 期望结果
-      placeholder: "实际 Star 数应为..."
+      label: 证据来源（可选）
+      description: 能佐证你说法的链接，如 GitHub 仓库页、API 响应截图等
+      placeholder: "https://github.com/owner/repo"

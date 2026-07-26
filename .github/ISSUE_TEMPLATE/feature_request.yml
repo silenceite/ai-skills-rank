@@ -14,3 +14,29 @@ body:
     id: reason
     attributes:
       label: 为什么需要
+      placeholder: "这个改进解决了什么问题？对使用者有什么价值？"
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 影响范围
+      description: 该建议主要影响哪部分
+      options:
+        - 榜单数据/采集
+        - 评分模型
+        - 网页展示/交互
+        - 自动化流程
+        - 文档/社区
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 你认为的优先级
+      options:
+        - 高（影响核心可用性）
+        - 中（明显提升体验）
+        - 低（锦上添花）
+    validations:
+      required: true

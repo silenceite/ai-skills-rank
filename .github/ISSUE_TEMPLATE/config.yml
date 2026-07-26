@@ -6,3 +6,6 @@ contact_links:
   - name: 🛡️ 安全指南
     url: https://silenceite.github.io/ai-skills-rank/SECURITY_GUIDE.html
     about: 安装 Skill 前必读的安全科普
+  - name: 📈 Star 历史趋势
+    url: https://silenceite.github.io/ai-skills-rank/trends.html
+    about: 查看 Top Skill 的月度 Star 走势

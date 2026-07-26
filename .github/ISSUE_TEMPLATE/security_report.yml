@@ -1,0 +1,58 @@
+name: 🛡️ 举报安全风险
+description: 发现疑似恶意、过度权限或隐私泄露的 Skill，向我们反馈
+title: "[Security] "
+labels: [security]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你帮助守护社区安全。本模板用于举报**存在安全风险的 AI Agent Skill**。
+        如仅想了解如何安全安装 Skill，请先阅读 [安全指南](https://silenceite.github.io/ai-skills-rank/SECURITY_GUIDE.html)。
+  - type: input
+    id: repo
+    attributes:
+      label: 仓库名
+      description: 疑似有问题的 skill 仓库全名
+      placeholder: "owner/repo-name"
+    validations:
+      required: true
+  - type: dropdown
+    id: risk_type
+    attributes:
+      label: 风险类型
+      description: 选择最贴近的风险类别
+      options:
+        - 含恶意脚本 / 后门
+        - 虚假背书（伪造官方/机构背景）
+        - 过度权限请求（读取密钥/文件系统/网络外传）
+        - 隐私泄露（收集数据外传）
+        - 营销话术误导（"最强/终极"无实质）
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: 详细描述
+      description: 说明你发现了什么、在哪里发现的、为什么认为有风险
+      placeholder: "例如：SKILL.md 中的 post_install 脚本会读取 ~/.ssh 并外传到 xx 域名"
+    validations:
+      required: true
+  - type: dropdown
+    id: impact
+    attributes:
+      label: 是否已造成影响
+      description: 你是否已经安装或运行了该 Skill
+      options:
+        - 仅发现，未安装
+        - 已安装但未运行
+        - 已运行，疑似受影响
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 所述内容基于我的实际观察，非主观猜测
+        - label: 不涉及对个人的无证据指控

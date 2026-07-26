@@ -203,13 +203,13 @@ python scripts/generate_report.py
 
 ## 贡献指南
 
-欢迎通过以下方式贡献：
+欢迎通过以下方式贡献。提交 Issue 或 PR 时，请使用对应的模板（点击仓库「New Issue / New Pull Request」后会自动出现）：
 
-1. **提交新 skill**：发现遗漏的 skill 仓库，通过 Issue 提交
-2. **报告数据错误**：发现评分有误，通过 Issue 反馈
-3. **改进评分模型**：通过 PR 提出评分维度优化建议
-4. **翻译文档**：帮助翻译为其他语言
-5. **分享榜单**：在社区分享月度报告
+- 🐛 **报告数据错误** → 使用「报告数据错误」模板，选择错误类型并填写当前值 / 正确值，便于快速核对
+- ➕ **推荐新 Skill** → 使用「推荐新 Skill」模板，注明平台归属与推荐理由
+- 🛡️ **举报安全风险** → 使用「举报安全风险」模板，反馈疑似恶意 / 过度权限请求的 Skill
+- 💡 **功能建议** → 使用「功能建议」模板，说明影响范围与优先级
+- 🔧 **代码 / 模型贡献** → 直接提交 PR，并填写 PR 模板中的自测清单
 
 ### 贡献流程
 
@@ -229,11 +229,14 @@ git push origin feature/new-skill-submission
 
 ## 路线图
 
-- [x] **M0** — 五榜单体系和评分模型确定
+- [x] **M0** — 六榜单体系和评分模型确定
 - [x] **M0** — WorkBuddy 自动化任务配置
-- [ ] **M1** — MVP 上线（采集脚本 + GitHub Actions + Pages）
-- [ ] **M2** — 集成 SkillSpector + 历史趋势图 + 搜索筛选
-- [ ] **M3** — 社区运营 + 用户提交机制
+- [x] **M1** — MVP 上线（采集脚本 + GitHub Actions + Pages）
+- [x] **M2a** — Star 历史趋势图（内联 SVG，零依赖）
+- [ ] **M2b** — 集成 NVIDIA SkillSpector 真实扫描
+- [ ] **M2c** — 跨榜单搜索 / 筛选
+- [x] **M3a** — 用户提交机制（Issue / PR 模板已上线）
+- [ ] **M3b** — 社区运营引流
 - [ ] **M4** — 企业版 + API 开放
 
 ---
@@ -242,7 +245,7 @@ git push origin feature/new-skill-submission
 
 - **数据采集**：Python 3.11+ / GitHub REST API
 - **评分引擎**：Python
-- **报告生成**：HTML + Chart.js
+- **报告生成**：HTML + 纯内联 SVG（零外部依赖，离线可用）
 - **自动化**：GitHub Actions
 - **部署**：GitHub Pages
 
