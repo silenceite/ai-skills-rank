@@ -62,3 +62,16 @@ jobs:
           git add docs/
           git commit -m "pages: update CN-friendly ranking" || echo "No changes"
           git push
+
+      - name: 微信通知构建失败 (Server酱)
+        if: failure()
+        continue-on-error: true
+        env:
+          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+        run: |
+          curl -s -X POST "https://sctapi.ftqq.com/${SERVERCHAN_KEY}.send" \
+            --data-urlencode "title=⚠️ AI-Skills-Rank 构建失败: ${{ github.workflow }}" \
+            --data-urlencode "desp=仓库: ${{ github.repository }}
+分支: ${{ github.ref_name }}
+运行: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+时间: $(date '+%Y-%m-%d %H:%M:%S')"
