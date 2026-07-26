@@ -15,13 +15,10 @@ jobs:
           KEY: ${{ secrets.SERVERCHAN_KEY }}
         run: |
           if [ -z "$KEY" ]; then
-            echo "::error::SERVERCHAN_KEY 未配置，请到 Settings → Secrets → Actions 添加"
+            echo "::error::SERVERCHAN_KEY 未配置，请到 Settings -> Secrets -> Actions 添加"
             exit 1
           fi
-          curl -s -X POST "https://sctapi.ftqq.com/${KEY}.send" \
-            --data-urlencode "title=✅ AI-Skills-Rank 通知测试成功" \
-            --data-urlencode "desp=这是一条来自 GitHub Actions 的测试消息。
-仓库: ${{ github.repository }}
-触发人: ${{ github.actor }}
-时间: $(date '+%Y-%m-%d %H:%M:%S')
-如果你在微信收到这条消息，说明 Server酱 通知已正常工作。"
+          RESP=$(curl -s -X POST "https://sctapi.ftqq.com/${KEY}.send" \
+            --data-urlencode "title=AI-Skills-Rank 通知测试" \
+            --data-urlencode "desp=这是来自 GitHub Actions 的测试消息。仓库=${{ github.repository }} 触发人=${{ github.actor }}")
+          echo "Server酱返回: $RESP"
