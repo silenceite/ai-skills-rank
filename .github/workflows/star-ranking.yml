@@ -40,11 +40,6 @@ jobs:
         run: |
           python scripts/collect_star.py --output reports/${{ steps.date.outputs.month }}/top50-ai-skills-${{ steps.date.outputs.month }}.html
 
-      - name: Generate report
-        if: always()
-        run: |
-          python scripts/generate_report.py --type star --month ${{ steps.date.outputs.month }} || true
-
       - name: Commit report
         run: |
           git config user.name "github-actions[bot]"
