@@ -11,6 +11,7 @@ AI Skills Rank - Star Ranking Collector (增强版 v2.0)
 """
 
 import argparse
+import csv
 import hashlib
 import json
 import os
@@ -30,6 +31,10 @@ MIN_STARS = 50
 MAX_REPOS = 500
 CACHE_DIR = Path("data/cache")
 CACHE_TTL = 24 * 3600  # 缓存有效期（秒）
+
+# 历史趋势数据（每月 Top 50 快照累加，必须提交进 git 才能跨月累积）
+HISTORY_CSV = Path("data/history/stars.csv")
+HISTORY_FIELDS = ["month", "rank", "repo", "stars"]
 
 
 # ───────────────────────── 缓存 ─────────────────────────
@@ -224,6 +229,36 @@ def load_previous(prev_month: str):
     for name, stars in pairs:
         data[name.strip()] = int(stars.replace(",", ""))
     return data or None
+
+
+# ───────────────────────── 历史趋势 CSV ─────────────────────────
+def save_history_csv(repos, month):
+    """将本月 Top 50 快照幂等写入 data/history/stars.csv。
+
+    幂等性：写入前先剔除该月已有行，再追加，避免重跑重复。
+    该文件必须提交进 git，否则 GitHub Actions 每次检出为空、趋势图永远只有 1 个月。
+    """
+    HISTORY_CSV.parent.mkdir(parents=True, exist_ok=True)
+    top = sorted(repos, key=lambda x: x["stars"], reverse=True)[:50]
+
+    existing = []
+    if HISTORY_CSV.exists():
+        try:
+            with open(HISTORY_CSV, newline="", encoding="utf-8") as f:
+                existing = [r for r in csv.DictReader(f) if r.get("month") != month]
+        except Exception:
+            existing = []
+
+    with open(HISTORY_CSV, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=HISTORY_FIELDS)
+        w.writeheader()
+        for r in sorted(existing, key=lambda x: x.get("month", "")):
+            w.writerow(r)
+        for i, r in enumerate(top, 1):
+            w.writerow({"month": month, "rank": i, "repo": r["full_name"], "stars": r["stars"]})
+
+    print(f"[Star Ranking] History CSV updated: {HISTORY_CSV} ({len(top)} rows for {month}, "
+          f"{len(existing)} rows kept from other months)", file=sys.stderr)
 
 
 # ───────────────────────── HTML 生成 ─────────────────────────
@@ -507,6 +542,8 @@ def main():
         print(f"[Star Ranking] No previous month data found for {prev_month}", file=sys.stderr)
 
     html = generate_html(repos, args.month, prev_data, prev_month)
+
+    save_history_csv(repos, args.month)
 
     os.makedirs(os.path.dirname(args.output), exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
