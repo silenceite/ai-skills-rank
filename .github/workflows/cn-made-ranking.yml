@@ -2,7 +2,6 @@ name: CN-Made Ranking (每月5号)
 
 on:
   schedule:
-    # 每月5号 UTC 02:00 = 北京时间 10:00
     - cron: '0 2 5 * *'
   workflow_dispatch:
 
@@ -15,34 +14,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install requests jinja2 python-dateutil
+        run: pip install requests jinja2 python-dateutil
 
       - name: Get current date
         id: date
-        run: echo "month=$(date +'%Y-%m')" >> $GITHUB_OUTPUT
+        run: echo "month=$(date +'%Y-%m')" >> "$GITHUB_OUTPUT"
 
       - name: Create report directory
-        run: mkdir -p reports/${{ steps.date.outputs.month }}
+        run: mkdir -p "reports/${{ steps.date.outputs.month }}"
 
       - name: Run CN-made ranking collector
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python scripts/collect_cn_made.py --output reports/${{ steps.date.outputs.month }}/cn-made-skills-${{ steps.date.outputs.month }}.html
+        run: python scripts/collect_cn_made.py --output "reports/${{ steps.date.outputs.month }}/cn-made-skills-${{ steps.date.outputs.month }}.html"
 
       - name: Generate report
         if: always()
-        run: |
-          python scripts/generate_report.py --type cn-made --month ${{ steps.date.outputs.month }} || true
+        run: python scripts/generate_report.py --type cn-made --month ${{ steps.date.outputs.month }} || true
 
       - name: Commit report
         run: |
@@ -55,23 +51,17 @@ jobs:
       - name: Update GitHub Pages
         if: always()
         run: |
-          mkdir -p docs/reports/${{ steps.date.outputs.month }}
-          cp reports/${{ steps.date.outputs.month }}/cn-made-skills-*.html docs/reports/${{ steps.date.outputs.month }}/ || true
+          mkdir -p "docs/reports/${{ steps.date.outputs.month }}"
+          cp reports/${{ steps.date.outputs.month }}/cn-made-skills-*.html "docs/reports/${{ steps.date.outputs.month }}/" || true
           mkdir -p docs/latest
           cp reports/${{ steps.date.outputs.month }}/cn-made-skills-*.html docs/latest/cn-made-ranking.html || true
           git add docs/
           git commit -m "pages: update CN-made ranking" || echo "No changes"
           git push
 
-      - name: 微信通知构建失败 (Server酱)
+      - name: Notify on failure (Server酱)
         if: failure()
         continue-on-error: true
         env:
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
-        run: |
-          curl -s -X POST "https://sctapi.ftqq.com/${SERVERCHAN_KEY}.send" \
-            --data-urlencode "title=⚠️ AI-Skills-Rank 构建失败: ${{ github.workflow }}" \
-            --data-urlencode "desp=仓库: ${{ github.repository }}
-分支: ${{ github.ref_name }}
-运行: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-时间: $(date '+%Y-%m-%d %H:%M:%S')"
+          SCKEY: ${{ secrets.SERVERCHAN_KEY }}
+        run: curl -s -X POST "https://sctapi.ftqq.com/${SCKEY}.send" --data-urlencode "title=AI-Skills-Rank build failed" --data-urlencode "desp=${{ github.repository }} ref=${{ github.ref_name }} run=${{ github.run_id }}"
