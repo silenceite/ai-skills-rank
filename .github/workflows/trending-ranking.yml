@@ -22,8 +22,13 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: pip install requests
+      - name: Cache trending scrape cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: trending-cache-${{ steps.date.outputs.month }}
+          restore-keys: |
+            trending-cache-
 
       - name: Get current date
         id: date

@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 """
-AI Agent Skills Rank — Trending Ranking Collector
+AI Agent Skills Rank — Trending Ranking Collector (v1.1)
 抓取 GitHub Trending monthly 页面，筛选 AI / Agent / MCP 相关仓库，
 按本月新增 Star 排序，生成 Top 30 飙升榜 HTML 报告。
 
 执行频率：每月 28 号 UTC 12:00（北京时间 20:00）
+
+v1.1 增强（2026-07-30）：
+- 反爬健壮性：随机真实浏览器 UA 池、识别 429/403 的 Retry-After、
+  45s 超时、对"过小响应（疑似反爬验证页）"主动重试。
+- 兜底机制：实时抓取全部重试失败后，回退到最近一次成功缓存的 HTML，
+  确保即便被 GitHub 限流也能产出（带"数据可能滞后"标注）的报告，
+  不再出现"完全不能更新"的空窗。
 """
 import argparse
 import json
 import os
+import random
 import re
 import sys
 import time
@@ -18,6 +26,20 @@ from datetime import datetime
 from html import escape
 
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+
+# 脚本根目录与缓存目录（data/cache，已被 .gitignore 忽略，不入库）
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CACHE_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "data", "cache")
+CACHE_HTML = os.path.join(CACHE_DIR, "trending_last.html")
+CACHE_META = os.path.join(CACHE_DIR, "trending_last.meta.json")
+
+# 真实浏览器 User-Agent 池，降低被 Trending 反爬拦截的概率
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+]
 
 # 筛选关键词：判定是否为 AI/Agent 相关项目
 SKILL_NAME_PATTERNS = [
@@ -52,31 +74,100 @@ SKILL_DESC_KEYWORDS = [
 TRENDING_URL = "https://github.com/trending?since=monthly"
 
 # 反爬退避策略
-MAX_RETRIES = 3
+MAX_RETRIES = 4
 RETRY_DELAY = 10
+REQUEST_TIMEOUT = 45
+# 响应过小（字节数低于此值）通常意味着拿到了反爬验证页而非真实列表
+ANTI_BOT_MIN_BYTES = 5000
+
+
+def _write_cache(html):
+    """将成功抓取的 HTML 与元数据写入本地缓存（供后续兜底使用）"""
+    try:
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        with open(CACHE_HTML, "w", encoding="utf-8") as f:
+            f.write(html)
+        with open(CACHE_META, "w", encoding="utf-8") as f:
+            json.dump(
+                {"fetched_at": datetime.now().isoformat(), "url": TRENDING_URL},
+                f, ensure_ascii=False,
+            )
+    except Exception as e:
+        print(f"[Trending] WARN: failed to write cache: {e}", file=sys.stderr)
+
+
+def load_cache_html():
+    """读取最近一次成功缓存的 Trending HTML"""
+    if os.path.exists(CACHE_HTML):
+        try:
+            with open(CACHE_HTML, encoding="utf-8") as f:
+                return f.read()
+        except Exception:
+            return ""
+    return ""
+
+
+def load_cache_meta():
+    """读取缓存元数据（含抓取时间）"""
+    if os.path.exists(CACHE_META):
+        try:
+            with open(CACHE_META, encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
 
 
 def fetch_trending_html():
-    """请求 GitHub Trending weekly 页面原始 HTML"""
+    """请求 GitHub Trending 页面原始 HTML，含重试与反爬退避。
+
+    返回 HTML 字符串；全部重试失败返回空字符串（由调用方决定是否兜底）。
+    """
     for attempt in range(1, MAX_RETRIES + 1):
+        ua = random.choice(USER_AGENTS)
         try:
             req = urllib.request.Request(TRENDING_URL)
-            req.add_header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
-            req.add_header("Accept", "text/html,application/xhtml+xml")
+            req.add_header("User-Agent", ua)
+            req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
             req.add_header("Accept-Language", "en-US,en;q=0.9")
-            with urllib.request.urlopen(req, timeout=30) as resp:
+            req.add_header("Connection", "keep-alive")
+            with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
                 html = resp.read().decode("utf-8", errors="replace")
-                print(f"[Trending] Fetched {len(html)} bytes from GitHub Trending", file=sys.stderr)
+                # 反爬验证页通常很小，拿到这种页面应当作失败重试
+                if len(html) < ANTI_BOT_MIN_BYTES:
+                    raise ValueError(
+                        f"suspiciously small response ({len(html)} bytes), likely anti-bot page"
+                    )
+                print(
+                    f"[Trending] Fetched {len(html)} bytes (UA #{attempt})",
+                    file=sys.stderr,
+                )
+                _write_cache(html)
                 return html
         except urllib.error.HTTPError as e:
-            print(f"[Trending] HTTP {e.code} on attempt {attempt}", file=sys.stderr)
+            wait = RETRY_DELAY * attempt
+            # 尊重服务端 Retry-After（常见于 429/403 限流）
+            retry_after = e.headers.get("Retry-After") if e.headers else None
+            if retry_after:
+                try:
+                    wait = max(wait, int(retry_after))
+                except ValueError:
+                    pass
+            print(
+                f"[Trending] HTTP {e.code} on attempt {attempt}; retry after {wait}s",
+                file=sys.stderr,
+            )
             if attempt < MAX_RETRIES:
-                time.sleep(RETRY_DELAY * attempt)
+                time.sleep(wait)
         except Exception as e:
-            print(f"[Trending] Error on attempt {attempt}: {e}", file=sys.stderr)
+            wait = RETRY_DELAY * attempt
+            print(
+                f"[Trending] Error on attempt {attempt}: {e}; retry after {wait}s",
+                file=sys.stderr,
+            )
             if attempt < MAX_RETRIES:
-                time.sleep(RETRY_DELAY * attempt)
-    print("[Trending] All retries exhausted. Returning empty.", file=sys.stderr)
+                time.sleep(wait)
+    print("[Trending] All retries exhausted. Will try local cache fallback.", file=sys.stderr)
     return ""
 
 
@@ -152,7 +243,7 @@ def parse_trending_repos(html):
         if desc_match:
             description = re.sub(r'<[^>]+>', '', desc_match.group(1)).strip()
 
-        # 提取本周新增 star
+        # 提取本月新增 star
         weekly_match = re.search(r'(\d[\d,]*)\s+stars?\s+this\s+(?:week|month)', context, re.IGNORECASE)
         weekly_stars = parse_number(weekly_match.group(1)) if weekly_match else 0
 
@@ -251,8 +342,12 @@ def fetch_repo_topics(full_name):
         return None
 
 
-def generate_html(repos, month):
-    """生成飙升榜 HTML 报告"""
+def generate_html(repos, month, fallback_meta=None):
+    """生成飙升榜 HTML 报告。
+
+    fallback_meta: 若本次为缓存兜底，则传入缓存元数据（含 fetched_at），
+                   并在页脚标注数据可能滞后。
+    """
     now = datetime.now().strftime("%Y-%m-%d %H:%M UTC")
 
     rows = []
@@ -298,11 +393,22 @@ def generate_html(repos, month):
     if not rows:
         rows.append(
             '<tr><td colspan="5" style="text-align:center;padding:40px;color:#9ca3af;">'
-            "本周 GitHub Trending 上暂未发现 Agent Skill 相关仓库</td></tr>"
+            "本月 GitHub Trending 上暂未发现 Agent Skill 相关仓库</td></tr>"
         )
 
     # 最高周增
     max_weekly = f"{repos[0]['weekly_stars']:,}+" if repos else "—"
+
+    # 缓存兜底提示
+    if fallback_meta:
+        fetched_at = fallback_meta.get("fetched_at", "未知时间")
+        fallback_note = (
+            f'<p style="color:#b45309;">⚠️ <strong>数据说明：</strong>'
+            f'本次实时抓取 GitHub Trending 失败（疑似限流 / 反爬），已回退使用最近一次成功缓存'
+            f'（抓取于 {escape(fetched_at)}）。数据可能略有滞后，下个周期将自动重试实时抓取。</p>'
+        )
+    else:
+        fallback_note = ""
 
     html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -381,7 +487,8 @@ td.stars:last-child {{ color: #534AB7; }}
     <p>• 数据来自 <a href="https://github.com/trending?since=monthly" target="_blank">GitHub Trending</a> 页面，筛选 AI / Agent / MCP 相关热门项目</p>
     <p>• 筛选逻辑：仓库名匹配 skill/agent/mcp 模式，或描述中含 AI agent / coding agent / MCP / Claude Code 等关键词</p>
     <p>• 榜单按本月新增 Star 降序排列，反映当前 GitHub 上"正在爆火"的 AI Agent 生态项目</p>
-    <p>• 生成时间：{now} · 采集脚本：collect_trending.py v1.0</p>
+    <p>• 生成时间：{now} · 采集脚本：collect_trending.py v1.1</p>
+{fallback_note}
   </div>
 </div>
 </body>
@@ -401,36 +508,56 @@ def main():
 
     print(f"[Trending] Starting collection for {args.month}...", file=sys.stderr)
 
-    # 1. 抓取 Trending HTML
+    # 1. 实时抓取 Trending HTML（含重试与反爬退避）
     html = fetch_trending_html()
+
+    # 2. 兜底：实时抓取失败则回退最近一次成功缓存
+    fallback_used = False
     if not html:
-        print("[Trending] ERROR: Failed to fetch trending page", file=sys.stderr)
+        cached = load_cache_html()
+        if cached:
+            html = cached
+            fallback_used = True
+            meta = load_cache_meta()
+            print(
+                f"[Trending] Using cached HTML fallback (fetched_at={meta.get('fetched_at')})",
+                file=sys.stderr,
+            )
+
+    if not html:
+        print("[Trending] ERROR: No live data and no cache available.", file=sys.stderr)
         sys.exit(1)
 
-    # 2. 解析仓库
+    # 3. 解析仓库
     repos = parse_trending_repos(html)
     if not repos:
         print("[Trending] WARNING: No repos parsed from trending page", file=sys.stderr)
-        # 生成空报告
+        # 生成空报告（仅当非兜底时也拿不到数据时；兜底数据通常可解析）
         repos = []
 
-    # 3. 放宽筛选：AI/Agent/MCP 相关项目
+    # 4. 放宽筛选：AI/Agent/MCP 相关项目
     skill_repos = filter_agent_skills(repos)
     print(f"[Trending] Filtered {len(skill_repos)} AI/Agent repos from {len(repos)} total", file=sys.stderr)
     for r in skill_repos:
         print(f"  ✓ {r['full_name']}: +{r['weekly_stars']:,} this week", file=sys.stderr)
 
-    # 4. 按本周新增 Star 降序排列
+    # 5. 按本月新增 Star 降序排列
     skill_repos.sort(key=lambda x: x["weekly_stars"], reverse=True)
     skill_repos = skill_repos[:30]
 
-    # 5. 生成 HTML 报告
-    html_content = generate_html(skill_repos, args.month)
+    # 6. 生成 HTML 报告（兜底时标注滞后）
+    fallback_meta = load_cache_meta() if fallback_used else None
+    html_content = generate_html(skill_repos, args.month, fallback_meta=fallback_meta)
 
     os.makedirs(os.path.dirname(args.output), exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
         f.write(html_content)
 
+    if fallback_used:
+        print(
+            "[Trending] Report generated from CACHE fallback (data may be stale).",
+            file=sys.stderr,
+        )
     print(f"[Trending] Report saved to: {args.output}", file=sys.stderr)
     print(f"[Trending] Done. {len(skill_repos)} skills in trending report.", file=sys.stderr)
 
