@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GitHub Star 最高的 50 个 AI Agent Skill 排行榜，每月自动更新。数据来自 GitHub API，按 Star 数降序排列，标注安全等级、平台支持和月度变动。">
+<meta property="og:title" content="AI Agent Skills Star 榜单 Top 50 — 2026-11">
+<meta property="og:description" content="GitHub 上 Star 最高的 50 个 AI Agent Skill，按热度排名。每月 1 号自动更新。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Agent Skills Star 榜单 Top 50 — 2026-11">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23534AB7'/><text x='16' y='23' text-anchor='middle' font-size='16' font-weight='bold' fill='white' font-family='system-ui'>AS</text></svg>">
+<title>GitHub Star 最高的 AI Agent Skills Top 50 — 2026-11</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f9fa; color: #1a1a2e; line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  h2 { font-size: 18px; font-weight: 600; margin: 32px 0 16px; color: #534AB7; }
+  .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 24px; }
+  .summary { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat-card { background: #fff; border-radius: 10px; padding: 18px 24px; border: 1px solid #e5e7eb; flex: 1; min-width: 160px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .stat-card .label { font-size: 12px; color: #6b7280; margin-bottom: 4px; letter-spacing: 0.3px; }
+  .stat-card .value { font-size: 24px; font-weight: 700; color: #534AB7; }
+  .table-wrapper { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  thead { background: #534AB7; }
+  thead th { color: #fff; font-size: 13px; font-weight: 600; padding: 14px 16px; text-align: left; }
+  thead th:first-child { width: 52px; text-align: center; }
+  thead th:nth-child(3) { width: 110px; text-align: right; }
+  tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
+  tbody tr:hover { background: #f5f3ff; }
+  tbody td { padding: 12px 16px; font-size: 13px; vertical-align: top; }
+  td.rank { text-align: center; font-weight: 700; color: #9ca3af; font-size: 15px; }
+  td.stars { text-align: right; font-weight: 700; color: #534AB7; white-space: nowrap; }
+  .repo-name { font-weight: 600; color: #1a1a2e; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .repo-desc { color: #6b7280; font-size: 12px; margin-top: 3px; line-height: 1.5; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+  .new-badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 700; background: #E1F5EE; color: #0F6E56; letter-spacing: 0.5px; }
+  .top3 { background: #faf9ff; }
+  .top3 td.rank { color: #534AB7; }
+  .change { display: inline-block; font-size: 11px; margin-left: 6px; font-weight: 600; }
+  .change.up { color: #0F6E56; }
+  .change.down { color: #A32D2D; }
+  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 768px) { .comp-grid { grid-template-columns: 1fr; } }
+  .comp-card { background: #fff; border-radius: 10px; padding: 20px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .comp-card h3 { font-size: 14px; font-weight: 600; color: #534AB7; margin-bottom: 12px; }
+  .comp-card table { box-shadow: none; border-radius: 0; }
+  .comp-card thead { background: #f5f3ff; }
+  .comp-card thead th { color: #534AB7; font-size: 12px; padding: 8px 12px; }
+  .comp-card tbody td { padding: 8px 12px; font-size: 12px; }
+  .dropout-tag { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 4px; background: #FCEBEB; color: #A32D2D; margin: 2px 4px 2px 0; }
+  .security-warn { background: #FFF8E1; border: 1px solid #FFD54F; border-radius: 10px; padding: 20px; margin-bottom: 24px; font-size: 13px; line-height: 1.8; }
+  .security-warn strong { color: #854F0B; }
+  .footer { margin-top: 24px; padding: 20px; background: #fff; border-radius: 10px; border: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; line-height: 1.9; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .footer strong { color: #534AB7; }
+  @media (max-width: 768px) {
+    .container { padding: 16px 12px; }
+    h1 { font-size: 22px; }
+    .summary { gap: 8px; }
+    .stat-card { min-width: 120px; padding: 12px 16px; }
+    .stat-card .value { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🚀 GitHub AI Agent Skills Star Top 50</h1>
+  <p class="subtitle">数据更新：2026-11-01 08:40 · 报告月份：2026-11 · 自动采集自 GitHub API · 对比上月：2026-10</p>
+
+  <div class="summary">
+    <div class="stat-card"><div class="label">收录 Skill 数</div><div class="value">50</div></div>
+    <div class="stat-card"><div class="label">最高 Star</div><div class="value">416,496</div></div>
+    <div class="stat-card"><div class="label">覆盖平台数</div><div class="value">4</div></div>
+    <div class="stat-card"><div class="label">新增入榜</div><div class="value">22</div></div>
+    <div class="stat-card"><div class="label">跌出 Top 50</div><div class="value">6</div></div>
+    <div class="stat-card"><div class="label">Top 10 总 Star</div><div class="value">1,488,733</div></div>
+  </div>
+
+  
+  <h2>📊 月度变动对比 (vs 2026-10)</h2>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <h3>🔥 Star 增长最快 Top 5</h3>
+      <table>
+        <thead><tr><th>仓库</th><th>变动</th><th>涨幅</th></tr></thead>
+        <tbody>          <tr>
+            <td>DietrichGebert/ponytail</td>
+            <td class="stars">149,553 → 181,707</td>
+            <td class="stars" style="color:#0F6E56;">↑ 21.5%</td>
+          </tr>
+          <tr>
+            <td>K-Dense-AI/scientific-agent-skills</td>
+            <td class="stars">47,247 → 55,588</td>
+            <td class="stars" style="color:#0F6E56;">↑ 17.7%</td>
+          </tr>
+          <tr>
+            <td>addyosmani/agent-skills</td>
+            <td class="stars">100,212 → 112,347</td>
+            <td class="stars" style="color:#0F6E56;">↑ 12.1%</td>
+          </tr>
+          <tr>
+            <td>wanshuiyin/Auto-claude-code-research-in-sleep</td>
+            <td class="stars">16,860 → 18,391</td>
+            <td class="stars" style="color:#0F6E56;">↑ 9.1%</td>
+          </tr>
+          <tr>
+            <td>alirezarezvani/claude-skills</td>
+            <td class="stars">27,085 → 29,089</td>
+            <td class="stars" style="color:#0F6E56;">↑ 7.4%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="comp-card">
+      <h3>🆕 新入榜 Skill</h3>
+      <p style="margin-bottom:8px;"><span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">morluto/rea (416,496 ⭐, #1)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">paperclipai/paperclip (109,635 ⭐, #5)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">Leonxlnx/taste-skill (107,284 ⭐, #6)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">pbakaus/impeccable (98,648 ⭐, #8)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">tt-a1i/archify (92,224 ⭐, #9)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">career-ops-hq/career-ops (79,118 ⭐, #10)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">cathrynlavery/diagram-design (63,596 ⭐, #13)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">blader/humanizer (63,060 ⭐, #14)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">coreyhaines31/marketingskills (57,730 ⭐, #15)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">alibaba/open-code-review (49,206 ⭐, #20)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">sickn33/agentic-awesome-skills (48,945 ⭐, #21)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">reactive-resume/reactive-resume (45,142 ⭐, #22)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">virgiliojr94/book-to-skill (36,673 ⭐, #26)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">feder-cr/invisible_dots (32,335 ⭐, #28)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">alchaincyf/huashu-design (28,342 ⭐, #32)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">titanwings/distilly (26,254 ⭐, #37)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">pascalorg/editor (25,259 ⭐, #38)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">NVIDIA/SkillSpector (23,740 ⭐, #39)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">KKKKhazix/khazix-skills (21,774 ⭐, #40)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">citrolabs/ego-lite (21,060 ⭐, #41)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">latent-spaces/brag (19,826 ⭐, #43)</span> <span class="dropout-tag" style="background:#E1F5EE;color:#0F6E56;">dreammis/social-auto-upload (15,987 ⭐, #49)</span> </p>
+      <h3 style="margin-top:16px;">📉 本月跌出 Top 50</h3>
+      <p><span class="dropout-tag">NevaMind-AI/memU (14,496 ⭐)</span> <span class="dropout-tag">aden-hive/hive (11,097 ⭐)</span> <span class="dropout-tag">Agents365-ai/drawio-skill (9,783 ⭐)</span> <span class="dropout-tag">nexu-io/html-anything (8,984 ⭐)</span> <span class="dropout-tag">jnMetaCode/superpowers-zh (8,251 ⭐)</span> <span class="dropout-tag">refly-ai/refly (7,533 ⭐)</span> </p>
+    </div>
+  </div>
+  
+
+  <div class="security-warn">
+    <strong>⚠️ 安全提示：安装 Skill 前三思</strong><br>
+    • 根据 <strong>NVIDIA SkillSpector</strong> 2026 年扫描数据：<strong>26.1%</strong> 的 Agent Skills 包含安全漏洞，<strong>5.2%</strong> 疑似恶意代码（数据来源：<a href="https://developer.nvidia.com/blog/introducing-skillspector-agentic-ai-security/" style="color:#534AB7;">NVIDIA SkillSpector Blog, 2026</a>；该数据为行业整体研究，非本榜单逐库实测）<br>
+    • 参考 <strong>OWASP Top 10 for Agentic Skills</strong> 安全框架，重点关注：指令注入、敏感数据泄露、权限提升、供应链投毒（来源：<a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" style="color:#534AB7;">OWASP LLM Top 10</a>）<br>
+    • <span style="background:#E1F5EE;color:#0F6E56;padding:1px 6px;border-radius:3px;font-size:11px;font-weight:600;">S·闭眼装</span> = 官方出品（Anthropic/Microsoft/Trail of Bits），可信任<br>
+    • <span style="background:#EEEDFE;color:#534AB7;padding:1px 6px;border-radius:3px;font-size:11px;font-weight:600;">A·放心装</span> = Star 10K+ 且运营 6 个月以上，高度可信<br>
+    • <span style="background:#FAEEDA;color:#854F0B;padding:1px 6px;border-radius:3px;font-size:11px;font-weight:600;">B·看一眼</span> = 个人开发者或 Star&lt;5K，建议审查后安装<br>
+    • <span style="background:#FCEBEB;color:#A32D2D;padding:1px 6px;border-radius:3px;font-size:11px;font-weight:600;">D·不建议</span> = 无 README / 营销话术过度，存在风险<br>
+    • 安装前检查：SKILL.md 内容是否合理、是否有可疑脚本、仓库是否活跃维护
+  </div>
+
+  <h2>🏆 完整排名 (Top 50)</h2>
+  <div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>仓库名称 / 核心功能</th>
+        <th>Star</th>
+        <th>安全等级</th>
+        <th>平台</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr class="top3">
+          <td class="rank">1</td>
+          <td><div class="repo-name">morluto/rea <span class="new-badge">NEW</span></div><div class="repo-desc">Reverse engineer anything with agents, from app behavior down to native binaries.</div></td>
+          <td class="stars">416,496</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr class="top3">
+          <td class="rank">2</td>
+          <td><div class="repo-name">anthropics/skills</div><div class="repo-desc">Public repository for Agent Skills</div></td>
+          <td class="stars">186,042<span class="change up">↑4%</span></td>
+          <td><span class="badge" style="background:#E1F5EE;color:#0F6E56;">S · 闭眼装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr class="top3">
+          <td class="rank">3</td>
+          <td><div class="repo-name">DietrichGebert/ponytail</div><div class="repo-desc">Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.</div></td>
+          <td class="stars">181,707<span class="change up">↑22%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>Claude</td>
+        </tr>
+        <tr>
+          <td class="rank">4</td>
+          <td><div class="repo-name">addyosmani/agent-skills</div><div class="repo-desc">Production-grade engineering skills for AI coding agents.</div></td>
+          <td class="stars">112,347<span class="change up">↑12%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">5</td>
+          <td><div class="repo-name">paperclipai/paperclip <span class="new-badge">NEW</span></div><div class="repo-desc">The open-source app everyone uses to manage agents at work</div></td>
+          <td class="stars">109,635</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">6</td>
+          <td><div class="repo-name">Leonxlnx/taste-skill <span class="new-badge">NEW</span></div><div class="repo-desc">Agent skills that give coding agents taste: art direction, reference images and a browser check instead of generic AI pages</div></td>
+          <td class="stars">107,284</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">7</td>
+          <td><div class="repo-name">nexu-io/open-design</div><div class="repo-desc">The 1st Collaborative AI Design Agent Workspace. Local-first and open source. Create motion, prototypes, websites, apps, dashboards, present...</div></td>
+          <td class="stars">105,232<span class="change up">↑6%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">8</td>
+          <td><div class="repo-name">pbakaus/impeccable <span class="new-badge">NEW</span></div><div class="repo-desc">The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.</div></td>
+          <td class="stars">98,648</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">9</td>
+          <td><div class="repo-name">tt-a1i/archify <span class="new-badge">NEW</span></div><div class="repo-desc">Turn any idea, plan, or codebase into a beautiful interactive diagram. An agent skill for Claude Code, Codex, and more.</div></td>
+          <td class="stars">92,224</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">10</td>
+          <td><div class="repo-name">career-ops-hq/career-ops <span class="new-badge">NEW</span></div><div class="repo-desc">Open-source AI job search agent and job finder: scan job boards, score each job 1-5 against your CV before you apply, tailor an ATS-friendly...</div></td>
+          <td class="stars">79,118</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">11</td>
+          <td><div class="repo-name">ComposioHQ/awesome-claude-skills</div><div class="repo-desc">A curated list of awesome Claude Skills, resources, and tools for customizing Claude AI workflows</div></td>
+          <td class="stars">78,473<span class="change up">↑3%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">12</td>
+          <td><div class="repo-name">shanraisshan/claude-code-best-practice</div><div class="repo-desc">from vibe coding to agentic engineering - practice makes claude perfect</div></td>
+          <td class="stars">68,393<span class="change up">↑2%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>Claude</td>
+        </tr>
+        <tr>
+          <td class="rank">13</td>
+          <td><div class="repo-name">cathrynlavery/diagram-design <span class="new-badge">NEW</span></div><div class="repo-desc">Editorial diagram design for Claude Code, Codex, GitHub Copilot, Cursor, Factory Droid, Qoder, and Pi. 45 diagram types. Self-contained HTML...</div></td>
+          <td class="stars">63,596</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">14</td>
+          <td><div class="repo-name">blader/humanizer <span class="new-badge">NEW</span></div><div class="repo-desc">Agent skill that removes signs of AI-generated writing from text</div></td>
+          <td class="stars">63,060</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">15</td>
+          <td><div class="repo-name">coreyhaines31/marketingskills <span class="new-badge">NEW</span></div><div class="repo-desc">Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.</div></td>
+          <td class="stars">57,730</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">16</td>
+          <td><div class="repo-name">hesreallyhim/awesome-claude-code</div><div class="repo-desc">A hand-picked collection of the finest of resources for the most awesome of agents, Claude Code, the undisputed champion of coding companion...</div></td>
+          <td class="stars">57,006<span class="change up">↑4%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>Claude</td>
+        </tr>
+        <tr>
+          <td class="rank">17</td>
+          <td><div class="repo-name">K-Dense-AI/scientific-agent-skills</div><div class="repo-desc">Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 250,000+ scientists worldwide. 177 ready-to-use val...</div></td>
+          <td class="stars">55,588<span class="change up">↑18%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">18</td>
+          <td><div class="repo-name">VoltAgent/awesome-openclaw-skills</div><div class="repo-desc">The awesome collection of OpenClaw skills. 5,400+ skills filtered and categorized from the official OpenClaw Skills Registry.🦞</div></td>
+          <td class="stars">53,474<span class="change up">↑1%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>OpenClaw</td>
+        </tr>
+        <tr>
+          <td class="rank">19</td>
+          <td><div class="repo-name">CherryHQ/cherry-studio</div><div class="repo-desc">Your AI workspace for models, agents, and productivity.</div></td>
+          <td class="stars">53,152<span class="change up">↑2%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">20</td>
+          <td><div class="repo-name">alibaba/open-code-review <span class="new-badge">NEW</span></div><div class="repo-desc">Secure, fast, efficient, battle-tested at Alibaba&#x27;s scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precis...</div></td>
+          <td class="stars">49,206</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">21</td>
+          <td><div class="repo-name">sickn33/agentic-awesome-skills <span class="new-badge">NEW</span></div><div class="repo-desc">2,884+ reusable AI agent skills for Claude Code, Codex, Cursor and Gemini CLI. AAS Core adds local catalog discovery, agent-owned selection ...</div></td>
+          <td class="stars">48,945</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">22</td>
+          <td><div class="repo-name">reactive-resume/reactive-resume <span class="new-badge">NEW</span></div><div class="repo-desc">A one-of-a-kind resume builder that keeps your privacy in mind. Completely secure, customizable, portable, open-source and free forever. Try...</div></td>
+          <td class="stars">45,142</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">23</td>
+          <td><div class="repo-name">wshobson/agents</div><div class="repo-desc">Multi-harness agentic plugin marketplace for Claude Code, Codex, Cursor, OpenCode, GitHub Copilot, Google Antigravity, and Pi</div></td>
+          <td class="stars">42,061<span class="change up">↑5%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">24</td>
+          <td><div class="repo-name">github/awesome-copilot</div><div class="repo-desc">Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.</div></td>
+          <td class="stars">40,644<span class="change up">↑3%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">25</td>
+          <td><div class="repo-name">VoltAgent/awesome-agent-skills</div><div class="repo-desc">A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor...</div></td>
+          <td class="stars">36,690<span class="change up">↑5%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">26</td>
+          <td><div class="repo-name">virgiliojr94/book-to-skill <span class="new-badge">NEW</span></div><div class="repo-desc">Turn any technical book PDF into a Claude Code skill — ready to study, reference, and use while you work.</div></td>
+          <td class="stars">36,673</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>Claude</td>
+        </tr>
+        <tr>
+          <td class="rank">27</td>
+          <td><div class="repo-name">topoteretes/cognee</div><div class="repo-desc">Cognee is the open-source AI memory platform for agents. Give your AI agents persistent long-term memory with small models for free</div></td>
+          <td class="stars">32,971<span class="change up">↑6%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">28</td>
+          <td><div class="repo-name">feder-cr/invisible_dots <span class="new-badge">NEW</span></div><div class="repo-desc">Open-source, self-hosted alternative to OpenAI Dots, Grok Bot. Built to be undetectable by anti-bot systems.</div></td>
+          <td class="stars">32,335</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">29</td>
+          <td><div class="repo-name">googleworkspace/cli</div><div class="repo-desc">Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google ...</div></td>
+          <td class="stars">32,029<span class="change up">↑3%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">30</td>
+          <td><div class="repo-name">hesamsheikh/awesome-openclaw-usecases</div><div class="repo-desc">A community collection of OpenClaw use cases for making life easier.</div></td>
+          <td class="stars">31,638</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>OpenClaw</td>
+        </tr>
+        <tr>
+          <td class="rank">31</td>
+          <td><div class="repo-name">alirezarezvani/claude-skills</div><div class="repo-desc">380 Claude Code skills &amp; agent skills &amp; plugins (30+ Agents, 70+ custom commands, 380+ skills, customizable references, scripts)for Claude C...</div></td>
+          <td class="stars">29,089<span class="change up">↑7%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">32</td>
+          <td><div class="repo-name">alchaincyf/huashu-design <span class="new-badge">NEW</span></div><div class="repo-desc">Huashu Design 3.0 · 在 agent 里打一句话，拿回能交付的设计：网页 / App 原型 / 可编辑 PPTX / 动画 / 信息图 · 六个候选挑三个方向 · 84 种带样张的风格库 · 越用越懂你的外观账本与设计体检 · HTML-native desig...</div></td>
+          <td class="stars">28,342</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">33</td>
+          <td><div class="repo-name">OthmanAdi/planning-with-files</div><div class="repo-desc">Persistent file-based planning for AI coding agents and long-running tasks. Crash-proof markdown plans, session recovery after /clear and co...</div></td>
+          <td class="stars">27,801<span class="change up">↑2%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">34</td>
+          <td><div class="repo-name">phuryn/pm-skills</div><div class="repo-desc">PM Skills Marketplace: 100+ agentic skills, commands, and plugins — from discovery to strategy, execution, launch, and growth.</div></td>
+          <td class="stars">27,583<span class="change up">↑3%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">35</td>
+          <td><div class="repo-name">JimLiu/baoyu-skills</div><div class="repo-desc"></div></td>
+          <td class="stars">27,134<span class="change up">↑3%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">36</td>
+          <td><div class="repo-name">agentskills/agentskills</div><div class="repo-desc">Specification and documentation for Agent Skills</div></td>
+          <td class="stars">26,839<span class="change up">↑4%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">37</td>
+          <td><div class="repo-name">titanwings/distilly <span class="new-badge">NEW</span></div><div class="repo-desc">Distilly — Distill how they think into reusable Skills for any Agent or Bot. Formerly Colleague Skill（原同事 Skill）.</div></td>
+          <td class="stars">26,254</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">38</td>
+          <td><div class="repo-name">pascalorg/editor <span class="new-badge">NEW</span></div><div class="repo-desc">Open-source 3D architectural editor with a local CLI, MCP tools, and practical workflows for humans and AI agents.</div></td>
+          <td class="stars">25,259</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">39</td>
+          <td><div class="repo-name">NVIDIA/SkillSpector <span class="new-badge">NEW</span></div><div class="repo-desc">Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, security risks, prompt injection, data exfiltration, and s...</div></td>
+          <td class="stars">23,740</td>
+          <td><span class="badge" style="background:#E1F5EE;color:#0F6E56;">S · 闭眼装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">40</td>
+          <td><div class="repo-name">KKKKhazix/khazix-skills <span class="new-badge">NEW</span></div><div class="repo-desc">数字生命卡兹克开源的 AI Skills 合集 | Agent Skills: leader（帮你定义目标）, neat-freak 洁癖, hv-analysis, khazix-writer &amp; more — Claude Code, Codex &amp; 40+ agents</div></td>
+          <td class="stars">21,774</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">41</td>
+          <td><div class="repo-name">citrolabs/ego-lite <span class="new-badge">NEW</span></div><div class="repo-desc">The fastest browser for AI agents to run browser automation, built for sharing your logged-in browser state with your AI agents, like Codex ...</div></td>
+          <td class="stars">21,060</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">42</td>
+          <td><div class="repo-name">teng-lin/notebooklm-py</div><div class="repo-desc">Unofficial Python API and agentic skill for Google Gemini Notebook. Full programmatic access to Gemini Notebook&#x27;s features—including capabil...</div></td>
+          <td class="stars">20,041<span class="change up">↑2%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">43</td>
+          <td><div class="repo-name">latent-spaces/brag <span class="new-badge">NEW</span></div><div class="repo-desc">You built it. Now brag. Turn the project you just created into a short, shareable launch video with one command.</div></td>
+          <td class="stars">19,826</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">44</td>
+          <td><div class="repo-name">microsoft/SkillOpt</div><div class="repo-desc">SkillOpt is a text-space optimizer that trains reusable natural-language skills for frozen LLM agents through trajectory-driven edits, valid...</div></td>
+          <td class="stars">18,790<span class="change up">↑5%</span></td>
+          <td><span class="badge" style="background:#E1F5EE;color:#0F6E56;">S · 闭眼装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">45</td>
+          <td><div class="repo-name">wanshuiyin/Auto-claude-code-research-in-sleep</div><div class="repo-desc">ARIS ⚔️ (Auto-Research-In-Sleep) — Lightweight Markdown-only skills for autonomous ML research: cross-model review loops, idea discovery, an...</div></td>
+          <td class="stars">18,391<span class="change up">↑9%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+        <tr>
+          <td class="rank">46</td>
+          <td><div class="repo-name">kubesphere/kubesphere</div><div class="repo-desc">The container platform tailored for Kubernetes multi-cloud, datacenter, and edge management ⎈ 🖥 ☁️</div></td>
+          <td class="stars">17,074</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">47</td>
+          <td><div class="repo-name">alibaba/zvec</div><div class="repo-desc">A lightweight, lightning-fast, in-process vector database</div></td>
+          <td class="stars">16,166<span class="change up">↑1%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">48</td>
+          <td><div class="repo-name">AgriciDaniel/claude-obsidian</div><div class="repo-desc">Self-organizing AI second brain for Obsidian + Claude Code. Drop any source and Claude reads, links, and files it into one connected knowled...</div></td>
+          <td class="stars">16,039<span class="change up">↑5%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>Claude</td>
+        </tr>
+        <tr>
+          <td class="rank">49</td>
+          <td><div class="repo-name">dreammis/social-auto-upload <span class="new-badge">NEW</span></div><div class="repo-desc">自动化上传视频到社交媒体：抖音、小红书、视频号、tiktok、youtube、bilibili</div></td>
+          <td class="stars">15,987</td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>通用</td>
+        </tr>
+        <tr>
+          <td class="rank">50</td>
+          <td><div class="repo-name">eigent-ai/eigent</div><div class="repo-desc">Eigent: The Open Source Cowork Desktop - Local and Free Alternative to Claude Cowork and Codex</div></td>
+          <td class="stars">15,705<span class="change up">↑2%</span></td>
+          <td><span class="badge" style="background:#EEEDFE;color:#534AB7;">A · 放心装</span></td>
+          <td>跨平台</td>
+        </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="footer">
+    <p><strong>📋 数据来源说明</strong></p>
+    <p>• 数据通过 <strong>GitHub Search API</strong> 自动采集，搜索 Topics: <code>claude-code-skills</code>, <code>openclaw-skills</code>, <code>agent-skills</code></p>
+    <p>• 收录范围：含 SKILL.md 结构的技能包/插件/工具链仓库；排除通用 AI 项目（AutoGPT、LangChain、n8n 等）</p>
+    <p>• 去重规则：同一仓库不同来源以最高 Star 数为准</p>
+    <p>• 安全等级为启发式评估（S=官方/A=高可信/B=中可信/C=需审查/D=高风险），<strong>非代码级漏洞扫描</strong>，仅供参考</p>
+    <p>• 平台归属判断依据：仓库 Topics 和描述中的关键词匹配（Claude / OpenClaw / Cursor / Codex / Gemini）</p>
+    • 上月报告：<a href="../../reports/2026-10/top50-ai-skills-2026-10.html" style="color:#534AB7;">top50-ai-skills-2026-10.html</a>
+    <p>• 生成时间：2026-11-01 08:40 · 采集脚本：collect_star.py v2.0（自动增强版）</p>
+  </div>
+</div>
+</body>
+</html>
